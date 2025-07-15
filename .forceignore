@@ -1,0 +1,9 @@
+# Ignore files and directories for SFDX project
+node_modules/
+.DS_Store
+*.log
+coverage/
+
+**/jsconfig.json
+
+**/.eslintrc.json

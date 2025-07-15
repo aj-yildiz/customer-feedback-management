@@ -1,0 +1,345 @@
+/* Modern Feedback Form Styling */
+.feedback-form-wrapper {
+    margin: 1.5rem auto;
+    max-width: 600px;
+    padding: 0 1rem;
+}
+
+.feedback-form-card-green {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    border-radius: 25px;
+    box-shadow: 0 25px 50px rgba(79, 172, 254, 0.2);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    border: none;
+    margin: 0;
+    max-width: none;
+}
+
+.feedback-form-card-green:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 30px 60px rgba(79, 172, 254, 0.25);
+}
+
+/* Card Header */
+.feedback-form-card-green .slds-card__header {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 2rem;
+    position: relative;
+}
+
+.feedback-form-card-green .slds-card__header h2 {
+    color: #ffffff;
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 0;
+}
+
+.feedback-form-card-green .slds-card__header .slds-icon {
+    fill: #ffffff;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+/* Theme Switcher Button */
+.theme-switcher-btn {
+    background: rgba(255, 255, 255, 0.2) !important;
+    border: 2px solid rgba(255, 255, 255, 0.3) !important;
+    border-radius: 50% !important;
+    color: #ffffff !important;
+    transition: all 0.3s ease !important;
+    z-index: 2;
+    width: 3rem !important;
+    height: 3rem !important;
+    display: none;
+}
+
+.theme-switcher-btn:hover {
+    background: rgba(255, 255, 255, 0.3) !important;
+    border-color: rgba(255, 255, 255, 0.5) !important;
+    transform: scale(1.1) !important;
+}
+
+/* Card Body */
+.feedback-form-card-green .slds-card__body {
+    background: #ffffff;
+    padding: 2.5rem;
+}
+
+/* Form Section */
+.form-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+/* Form Section Headings */
+.form-section-heading {
+    display: block;
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    color: #2d3748;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+/* Form Elements */
+.form-section .slds-form-element {
+    margin-bottom: 1.5rem;
+}
+
+.form-section .slds-form-element__label {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #4a5568;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+/* Input Fields */
+.form-section .slds-combobox__input,
+.form-section .slds-textarea {
+    border: 2px solid rgba(79, 172, 254, 0.2);
+    border-radius: 15px;
+    padding: 1rem 1.25rem;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #2d3748;
+    transition: all 0.3s ease;
+    background: #ffffff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.form-section .slds-combobox__input:focus,
+.form-section .slds-textarea:focus,
+.form-section .slds-combobox__input:hover,
+.form-section .slds-textarea:hover {
+    border-color: #4facfe;
+    box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1), 0 4px 15px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
+}
+
+/* Combobox Dropdown */
+.slds-combobox__input[aria-expanded="true"] {
+    border-color: #4facfe;
+    box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.2);
+}
+
+.slds-dropdown {
+    border: 2px solid rgba(79, 172, 254, 0.2);
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+/* Combobox Options */
+.slds-listbox__option {
+    padding: 0.75rem 1.25rem;
+    border-radius: 8px;
+    margin: 0.25rem;
+    transition: all 0.2s ease;
+}
+
+.slds-listbox__option:hover,
+.slds-listbox__option[aria-selected="true"] {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    color: #ffffff;
+    transform: translateX(3px);
+}
+
+/* Form Actions */
+.form-actions {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+/* Submit Button */
+.submit-button {
+    background-color: #28a745;
+    color: white;
+    border-radius: 50px;
+    padding: 1rem 3rem;
+    font-size: 1.4rem;
+}
+
+/* Remove the pink gradient from the hover effect */
+.submit-button:hover,
+.submit-button:focus {
+    background-color: #28a745 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4) !important;
+}
+
+.submit-button:active {
+    transform: translateY(0) !important;
+}
+
+.submit-button:disabled {
+    background: #a0aec0 !important;
+    transform: none !important;
+    box-shadow: none !important;
+    cursor: not-allowed !important;
+}
+
+/* Loading Spinner */
+.slds-spinner {
+    --slds-c-spinner-color-foreground: #4facfe;
+    --slds-c-spinner-color-background: rgba(79, 172, 254, 0.2);
+}
+
+/* Loading Text */
+.slds-text-body_small {
+    color: #4a5568;
+    font-weight: 500;
+}
+
+/* Required Field Asterisk */
+.form-section-heading span[style*="color: red"] {
+    color: #f56565 !important;
+    font-weight: 700;
+}
+
+/* Success and Error Messages */
+.slds-text-color_success {
+    color: #38a169 !important;
+    font-weight: 600;
+}
+
+.slds-text-color_error {
+    color: #e53e3e !important;
+    font-weight: 600;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .feedback-form-wrapper {
+        margin: 1rem;
+        padding: 0;
+    }
+    
+    .feedback-form-card-green .slds-card__header {
+        padding: 1.5rem;
+    }
+    
+    .feedback-form-card-green .slds-card__header h2 {
+        font-size: 1.5rem;
+    }
+    
+    .feedback-form-card-green .slds-card__body {
+        padding: 1.5rem;
+    }
+    
+    .form-section {
+        gap: 1rem;
+    }
+    
+    .form-section-heading {
+        font-size: 1rem;
+    }
+    
+    .form-section .slds-combobox__input,
+    .form-section .slds-textarea {
+        padding: 0.75rem 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .submit-button {
+        font-size: 1rem !important;
+        padding: 0.875rem 2rem !important;
+        min-width: 180px !important;
+    }
+    
+    .theme-switcher-btn {
+        width: 2.5rem !important;
+        height: 2.5rem !important;
+    }
+}
+
+/* Dark Theme Support */
+@media (prefers-color-scheme: dark) {
+    .feedback-form-card-green .slds-card__body {
+        background: #1a202c;
+        color: #ffffff;
+    }
+    
+    .form-section-heading {
+        color: #e2e8f0;
+    }
+    
+    .form-section .slds-form-element__label {
+        color: #cbd5e0;
+    }
+    
+    .form-section .slds-combobox__input,
+    .form-section .slds-textarea {
+        background: #2d3748;
+        color: #ffffff;
+        border-color: rgba(79, 172, 254, 0.3);
+    }
+    
+    .form-section .slds-combobox__input:focus,
+    .form-section .slds-textarea:focus {
+        background: #2d3748;
+        color: #ffffff;
+    }
+    
+    .slds-dropdown {
+        background: #2d3748;
+        color: #ffffff;
+    }
+    
+    .slds-text-body_small {
+        color: #cbd5e0;
+    }
+}
+
+/* Animation for form elements */
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.form-section .slds-form-element {
+    animation: slideInUp 0.6s ease-out;
+}
+
+.form-section .slds-form-element:nth-child(1) { animation-delay: 0.1s; }
+.form-section .slds-form-element:nth-child(2) { animation-delay: 0.2s; }
+.form-section .slds-form-element:nth-child(3) { animation-delay: 0.3s; }
+
+/* Floating Label Effect */
+.form-section .slds-form-element.slds-has-input-focus .slds-form-element__label,
+.form-section .slds-form-element.slds-has-input-value .slds-form-element__label {
+    transform: translateY(-1.5rem) scale(0.85);
+    color: #4facfe;
+    font-weight: 600;
+}
+
+/* Custom Scrollbar */
+.form-section .slds-textarea::-webkit-scrollbar {
+    width: 8px;
+}
+
+.form-section .slds-textarea::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 10px;
+}
+
+.form-section .slds-textarea::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    border-radius: 10px;
+}
+
+.form-section .slds-textarea::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+}

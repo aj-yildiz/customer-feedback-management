@@ -1,0 +1,249 @@
+.welcome-container {
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+}
+
+.welcome-card {
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fc 100%);
+  border-radius: 20px;
+  padding: 2.5rem;
+  box-shadow: 
+    0 10px 30px rgba(0, 0, 0, 0.1),
+    0 4px 8px rgba(0, 0, 0, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  max-width: 600px;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.welcome-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  border-radius: 20px 20px 0 0;
+}
+
+.welcome-content {
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.welcome-header {
+  margin-bottom: 2rem;
+}
+
+.user-avatar {
+  display: inline-block;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 50%;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 
+    0 8px 20px rgba(102, 126, 234, 0.3),
+    0 2px 6px rgba(102, 126, 234, 0.2);
+}
+
+.avatar-icon {
+  --slds-c-icon-color-foreground: #ffffff;
+  --slds-c-icon-color-foreground-default: #ffffff;
+}
+
+.welcome-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  font-family: 'Salesforce Sans', Arial, sans-serif;
+}
+
+.welcome-subtitle {
+  font-size: 1.1rem;
+  color: #7f8c8d;
+  font-weight: 400;
+  margin-bottom: 0;
+  font-family: 'Salesforce Sans', Arial, sans-serif;
+}
+
+.welcome-message {
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #f8f9fc 0%, #ffffff 100%);
+  border-radius: 15px;
+  border: 1px solid #e9ecef;
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.message-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  text-align: left;
+}
+
+.heart-icon {
+  --slds-c-icon-color-foreground: #e74c3c;
+  --slds-c-icon-color-foreground-default: #e74c3c;
+  flex-shrink: 0;
+  margin-top: 0.2rem;
+}
+
+.message-text {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #34495e;
+  margin: 0;
+  font-family: 'Salesforce Sans', Arial, sans-serif;
+  font-weight: 400;
+}
+
+.feature-highlights {
+  display: flex;
+  justify-content: space-around;
+  gap: 1.5rem;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 2px solid #f1f3f5;
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fc 100%);
+  border-radius: 25px;
+  border: 1px solid #e9ecef;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.feature-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.feature-icon {
+  --slds-c-icon-color-foreground: #667eea;
+  --slds-c-icon-color-foreground-default: #667eea;
+}
+
+.feature-text {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #2c3e50;
+  font-family: 'Salesforce Sans', Arial, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .welcome-container {
+    padding: 1rem;
+  }
+  
+  .welcome-card {
+    padding: 1.5rem;
+  }
+  
+  .welcome-title {
+    font-size: 2rem;
+  }
+  
+  .welcome-subtitle {
+    font-size: 1rem;
+  }
+  
+  .message-content {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
+  }
+  
+  .feature-highlights {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .feature-item {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .welcome-title {
+    font-size: 1.75rem;
+  }
+  
+  .welcome-card {
+    padding: 1.25rem;
+  }
+  
+  .welcome-message {
+    padding: 1rem;
+  }
+}
+
+/* Subtle animations */
+.welcome-card {
+  animation: slideIn 0.8s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.user-avatar {
+  animation: bounceIn 1s ease-out 0.3s both;
+}
+
+@keyframes bounceIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.feature-item {
+  animation: fadeInUp 0.6s ease-out both;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.feature-item:nth-child(1) { animation-delay: 0.4s; }
+.feature-item:nth-child(2) { animation-delay: 0.6s; }
+.feature-item:nth-child(3) { animation-delay: 0.8s; } 

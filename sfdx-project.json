@@ -1,0 +1,23 @@
+{
+    "packageDirectories": [
+        {
+            "path": "force-app",
+            "default": true
+        }
+    ],
+    "namespace": "",
+    "sfdcLoginUrl": "https://login.salesforce.com",
+    "sourceApiVersion": "60.0",
+    "orgName": "Customer Feedback Management Scratch Org",
+    "edition": "Developer",
+    "features": [],
+    "settings": {
+      "lightningExperienceSettings": {
+        "enableS1DesktopEnabled": true
+      },
+      "mobileSettings": {
+        "enableS1EncryptedStoragePref2": false
+      }
+    }
+  }
+  

@@ -1,0 +1,12 @@
+.sfdx/
+.sf/
+node_modules/
+.vscode/
+*.log
+.DS_Store
+*.tmp
+*.cache
+.localdevserver/
+.apex
+target/
+*.orig

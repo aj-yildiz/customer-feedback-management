@@ -1,0 +1,308 @@
+/* Modern Feedback List Styling */
+.feedback-list-wrapper {
+    margin: 1.5rem auto;
+    max-width: 1600px;
+    padding: 0 1rem;
+}
+
+.feedback-list-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(102, 126, 234, 0.15);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+.feedback-list-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 25px 50px rgba(102, 126, 234, 0.2);
+}
+
+/* Card Header */
+.feedback-list-card .slds-card__header {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 1.5rem 2rem;
+}
+
+.feedback-list-card .slds-card__header h2 {
+    color: #ffffff;
+    font-size: 1.5rem;
+    font-weight: 600;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.feedback-list-card .slds-card__header .slds-icon {
+    fill: #ffffff;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+/* Card Body */
+.feedback-list-card .slds-card__body {
+    background: #ffffff;
+    padding: 2rem;
+}
+
+/* Filter Section */
+.filter-section {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 8px 25px rgba(240, 147, 251, 0.15);
+}
+
+.filter-section .slds-form-element__label {
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.5rem;
+}
+
+/* Custom Combobox Styling */
+.filter-section .slds-combobox__input {
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.9);
+    color: #2d3748;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.filter-section .slds-combobox__input:focus,
+.filter-section .slds-combobox__input:hover {
+    border-color: #ffffff;
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+    transform: scale(1.02);
+}
+
+.filter-section .slds-combobox__input[readonly] {
+    background: rgba(255, 255, 255, 0.95);
+}
+
+/* Table Container */
+.feedback-table-container {
+    background: #ffffff;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(102, 126, 234, 0.1);
+}
+
+/* Table Styling */
+.feedback-table-container .slds-table {
+    border: none;
+    background: #ffffff;
+}
+
+.feedback-table-container .slds-table thead th {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    color: #ffffff;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 0.8rem;
+    padding: 1rem;
+    border: none;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.feedback-table-container .slds-table thead th .slds-icon {
+    fill: #ffffff;
+    opacity: 0.9;
+}
+
+.feedback-table-container .slds-table tbody td {
+    padding: 1rem;
+    border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+    vertical-align: middle;
+}
+
+.feedback-table-container .slds-table tbody tr {
+    transition: all 0.3s ease;
+    background: #ffffff;
+}
+
+.feedback-table-container .slds-table tbody tr:hover {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: #ffffff;
+    transform: scale(1.01);
+    box-shadow: 0 4px 15px rgba(240, 147, 251, 0.2);
+}
+
+.feedback-table-container .slds-table tbody tr:hover .slds-icon {
+    fill: #ffffff;
+}
+
+.feedback-table-container .slds-table tbody tr:hover .slds-badge {
+    background: #ffffff !important;
+    color: #f5576c !important;
+    font-weight: 600;
+}
+
+/* Feedback Row Styling */
+.feedback-row td:first-child {
+    font-weight: 600;
+    color: #667eea;
+}
+
+.feedback-row:hover td:first-child {
+    color: #ffffff;
+}
+
+/* Type Icons */
+.feedback-row .slds-media__figure .slds-icon {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 50%;
+    padding: 0.3rem;
+    fill: #ffffff;
+    transition: all 0.3s ease;
+}
+
+.feedback-row:hover .slds-media__figure .slds-icon {
+    background: #ffffff;
+    fill: #f5576c;
+    transform: scale(1.1);
+}
+
+/* Status Badges */
+.slds-badge {
+    border-radius: 20px;
+    font-weight: 600;
+    padding: 0.4rem 1rem;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+}
+
+.slds-badge.slds-theme_shade {
+    background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+    color: #4a5568;
+}
+
+.slds-badge.slds-theme_warning {
+    background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+    color: #c53030;
+}
+
+.slds-badge.slds-theme_success {
+    background: linear-gradient(135deg, #a8edea 0%, #68d391 100%);
+    color: #22543d;
+}
+
+/* Description Cell */
+.description-cell {
+    max-width: 300px;
+    word-wrap: break-word;
+    line-height: 1.4;
+}
+
+/* No Data Message */
+.slds-table tbody tr td {
+    text-align: center;
+}
+
+.slds-table tbody tr td .slds-text-color_weak {
+    color: #a0aec0;
+}
+
+/* Actions Section */
+.slds-grid.slds-grid_align-spread {
+    background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.slds-text-body_small.slds-text-color_weak {
+    color: #4a5568;
+    font-weight: 500;
+}
+
+/* Refresh Button */
+.refresh-button {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    border: none !important;
+    border-radius: 25px !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    padding: 0.75rem 1.5rem !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3) !important;
+}
+
+.refresh-button:hover,
+.refresh-button:focus {
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4) !important;
+}
+
+.refresh-button:active {
+    transform: translateY(0) !important;
+}
+
+/* Loading Spinner */
+.slds-spinner {
+    --slds-c-spinner-color-foreground: #667eea;
+    --slds-c-spinner-color-background: rgba(102, 126, 234, 0.2);
+}
+
+/* Update the submit button to be green */
+.submit-button {
+    background-color: #28a745;
+    color: white;
+}
+
+/* Remove dark theme references */
+.dark-theme {
+    display: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .feedback-list-wrapper {
+        margin: 1rem;
+        padding: 0;
+    }
+    
+    .feedback-list-card .slds-card__header,
+    .feedback-list-card .slds-card__body {
+        padding: 1rem;
+    }
+    
+    .filter-section {
+        padding: 1rem;
+    }
+    
+    .filter-section .slds-grid {
+        flex-direction: column;
+    }
+    
+    .filter-section .slds-col {
+        margin-bottom: 1rem;
+    }
+    
+    .feedback-table-container {
+        border-radius: 12px;
+    }
+    
+    .feedback-table-container .slds-table thead th,
+    .feedback-table-container .slds-table tbody td {
+        padding: 0.5rem;
+        font-size: 0.8rem;
+    }
+    
+    .description-cell {
+        max-width: 150px;
+    }
+}

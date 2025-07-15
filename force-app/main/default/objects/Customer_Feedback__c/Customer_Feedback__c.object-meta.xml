@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Customer Feedback</label>
+    <pluralLabel>Customer Feedbacks</pluralLabel>
+    <nameField>
+        <type>AutoNumber</type>
+        <label>Feedback ID</label>
+        <displayFormat>CF-{0000}</displayFormat>
+    </nameField>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <sharingModel>ReadWrite</sharingModel>
+    <enableReports>true</enableReports>
+    <enableActivities>true</enableActivities>
+    <enableHistory>true</enableHistory>
+    <enableFeeds>false</enableFeeds>
+    <enableBulkApi>true</enableBulkApi>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+</CustomObject>
