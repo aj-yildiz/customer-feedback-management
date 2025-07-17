@@ -1,0 +1,16 @@
+{
+  "name": "customer-feedback-management",
+  "version": "1.0.0",
+  "description": "Salesforce Customer Feedback Management System",
+  "scripts": {
+    "test:unit": "sfdx-lwc-jest",
+    "test:unit:watch": "sfdx-lwc-jest --watch",
+    "test:unit:debug": "sfdx-lwc-jest --debug",
+    "test:unit:coverage": "sfdx-lwc-jest --coverage"
+  },
+  "devDependencies": {
+    "@salesforce/sfdx-lwc-jest": "^3.1.0",
+    "eslint": "^8.57.0",
+    "eslint-plugin-jest": "^28.6.0"
+  }
+} 

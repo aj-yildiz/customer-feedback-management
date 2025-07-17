@@ -7,3 +7,9 @@ coverage/
 **/jsconfig.json
 
 **/.eslintrc.json
+
+# Jest test files - don't deploy to Salesforce
+**/__tests__/**
+**/jest.config.js
+package.json
+package-lock.json

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Profile xmlns="http://soap.sforce.com/2006/04/metadata">
+    <custom>true</custom>
+    <description>Profile for Customer Feedback Portal guests and users</description>
+    <userLicense>Guest User License</userLicense>
+    
+    <!-- Object Permissions -->
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>ece__Customer_Feedback__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    
+    <!-- Field Permissions -->
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>ece__Customer_Feedback__c.ece__Customer_Name__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>ece__Customer_Feedback__c.ece__Customer_Email__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>ece__Customer_Feedback__c.ece__Description__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>ece__Customer_Feedback__c.ece__Feedback_Type__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>ece__Customer_Feedback__c.ece__Status__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    
+    <!-- Apex Class Access -->
+    <classAccesses>
+        <apexClass>CustomerFeedbackController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    
+    <!-- Basic Profile Settings -->
+    <profileActionOverrides/>
+</Profile> 
