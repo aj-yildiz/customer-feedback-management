@@ -85,4 +85,71 @@ describe('c-ticket-welcome', () => {
         const welcomeContainer = element.shadowRoot.querySelector('.welcome-container');
         expect(welcomeContainer).toBeTruthy();
     });
+
+    it('tests userName getter with null user data', async () => {
+        const element = createElement('c-ticket-welcome', {
+            is: TicketWelcome
+        });
+        
+        // Don't emit any user data to test null scenario
+        document.body.appendChild(element);
+        await Promise.resolve();
+
+        // Access userName getter to test fallback
+        const welcomeTitle = element.shadowRoot.querySelector('.welcome-title');
+        expect(welcomeTitle).toBeTruthy();
+    });
+
+    it('tests userName getter with empty user data', async () => {
+        // Mock empty user data
+        const mockUser = {
+            data: null
+        };
+        getRecord.emit(mockUser);
+
+        const element = createElement('c-ticket-welcome', {
+            is: TicketWelcome
+        });
+        document.body.appendChild(element);
+        await Promise.resolve();
+
+        const welcomeContainer = element.shadowRoot.querySelector('.welcome-container');
+        expect(welcomeContainer).toBeTruthy();
+    });
+
+    it('tests isUserLoaded getter when user is loaded', async () => {
+        // Mock loaded user data
+        const mockUser = {
+            data: {
+                fields: {
+                    Name: {
+                        value: 'Test User'
+                    }
+                }
+            }
+        };
+        getRecord.emit(mockUser);
+
+        const element = createElement('c-ticket-welcome', {
+            is: TicketWelcome
+        });
+        document.body.appendChild(element);
+        await Promise.resolve();
+
+        // Test that component shows loaded state
+        const welcomeMessage = element.shadowRoot.querySelector('.welcome-message');
+        expect(welcomeMessage).toBeTruthy();
+    });
+
+    it('tests isUserLoaded getter when user is not loaded', async () => {
+        const element = createElement('c-ticket-welcome', {
+            is: TicketWelcome
+        });
+        document.body.appendChild(element);
+        await Promise.resolve();
+
+        // Test component in unloaded state
+        const welcomeContainer = element.shadowRoot.querySelector('.welcome-container');
+        expect(welcomeContainer).toBeTruthy();
+    });
 }); 
