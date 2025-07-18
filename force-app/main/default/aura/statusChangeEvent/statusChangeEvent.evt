@@ -1,3 +1,0 @@
-<aura:event type="APPLICATION" description="Fires when status filter changes">
-    <aura:attribute name="status" type="String"/>
-</aura:event>

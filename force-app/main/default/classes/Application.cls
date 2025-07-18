@@ -1,0 +1,24 @@
+public class Application {
+    
+    // Configure and create the UnitOfWorkFactory for this Application
+    public static final fflib_Application.UnitOfWorkFactory UnitOfWork = 
+        new fflib_Application.UnitOfWorkFactory(
+            new List<SObjectType> {
+                ece__Customer_Feedback__c.SObjectType
+            });
+    
+    // Configure and create the SelectorFactory for this Application
+    public static final fflib_Application.SelectorFactory Selector = 
+        new fflib_Application.SelectorFactory(
+            new Map<SObjectType, Type> {
+                ece__Customer_Feedback__c.SObjectType => CustomerFeedbackSelector.class
+            });
+    
+    // Configure and create the DomainFactory for this Application
+    public static final fflib_Application.DomainFactory Domain = 
+        new fflib_Application.DomainFactory(
+            Application.Selector,
+            new Map<SObjectType, Type> {
+                ece__Customer_Feedback__c.SObjectType => CustomerFeedbackDomain.Constructor.class
+            });
+} 

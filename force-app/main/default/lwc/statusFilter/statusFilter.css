@@ -1,0 +1,16 @@
+.slds-box {
+    margin-bottom: 1rem;
+    background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+.slds-box lightning-combobox {
+    --slds-c-combobox-label-color-text: white;
+}
+
+.slds-box lightning-combobox lightning-base-combobox {
+    --slds-c-combobox-color-background: rgba(255, 255, 255, 0.9);
+    --slds-c-combobox-radius-border: 6px;
+} 
