@@ -21,4 +21,20 @@ public class Application {
             new Map<SObjectType, Type> {
                 Customer_Feedback__c.SObjectType => CustomerFeedbackDomain.Constructor.class
             });
+            
+    // Configure and create the ServiceFactory for this Application
+    public static final fflib_Application.ServiceFactory Service =
+        new fflib_Application.ServiceFactory(
+            new Map<Type, Type> {
+                IFeedbackNotifier.class => EmailFeedbackNotifier.class
+            });
+            
+    // Application context
+    public static final fflib_Application.ApplicationContext context = 
+        new fflib_Application.ApplicationContext();
+        
+    static {
+        // register feedback notifier
+        context.registerFactory(IFeedbackNotifier.class, new fflib_Application.FactoryFactory(EmailFeedbackNotifier.class));
+    }
 } 

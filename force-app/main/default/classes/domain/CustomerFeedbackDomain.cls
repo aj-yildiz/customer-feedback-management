@@ -52,6 +52,12 @@ public class CustomerFeedbackDomain extends fflib_SObjectDomain {
         }
     }
     
+    public override void afterInsert() {
+        super.afterInsert();
+        IFeedbackNotifier notifier = (IFeedbackNotifier)Application.context.getFactory(IFeedbackNotifier.class).newInstance();
+        notifier.notifyOnNewFeedback((List<Customer_Feedback__c>)Records);
+    }
+    
     public void changeStatus(String newStatus, fflib_ISObjectUnitOfWork uow) {
         validateStatusTransition(newStatus);
         
