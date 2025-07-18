@@ -1,4 +1,4 @@
-trigger FeedbackTrigger on ece__Customer_Feedback__c (
+trigger FeedbackTrigger on Customer_Feedback__c (
     before insert, before update, before delete,
     after insert, after update, after delete, after undelete
 ) {

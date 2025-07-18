@@ -4,12 +4,12 @@ private class CustomerFeedbackDomainTest {
     @isTest
     static void testOnApplyDefaults() {
         // Create feedback without status
-        ece__Customer_Feedback__c feedback = new ece__Customer_Feedback__c(
-            ece__Customer_Name__c = 'Test Customer',
-            ece__Customer_Email__c = 'test@example.com',
-            ece__Feedback_Type__c = 'Bug',
-            ece__Description__c = 'Test description'
-            // ece__Status__c deliberately not set
+        Customer_Feedback__c feedback = new Customer_Feedback__c(
+            Customer_Name__c = 'Test Customer',
+            Customer_Email__c = 'test@example.com',
+            Feedback_Type__c = 'Bug',
+            Description__c = 'Test description'
+            // Status__c deliberately not set
         );
         
         Test.startTest();
@@ -17,17 +17,17 @@ private class CustomerFeedbackDomainTest {
         Test.stopTest();
         
         // Refresh the record to see the applied defaults
-        feedback = [SELECT ece__Status__c FROM ece__Customer_Feedback__c WHERE Id = :feedback.Id];
-        System.assertEquals('New', feedback.ece__Status__c, 'Status should default to New');
+        feedback = [SELECT Status__c FROM Customer_Feedback__c WHERE Id = :feedback.Id];
+        System.assertEquals('New', feedback.Status__c, 'Status should default to New');
     }
     
     @isTest
     static void testOnValidateDescriptionRequired() {
-        ece__Customer_Feedback__c feedback = new ece__Customer_Feedback__c(
-            ece__Customer_Name__c = 'Test Customer',
-            ece__Customer_Email__c = 'test@example.com',
-            ece__Feedback_Type__c = 'Bug'
-            // ece__Description__c deliberately not set
+        Customer_Feedback__c feedback = new Customer_Feedback__c(
+            Customer_Name__c = 'Test Customer',
+            Customer_Email__c = 'test@example.com',
+            Feedback_Type__c = 'Bug'
+            // Description__c deliberately not set
         );
         
         Test.startTest();
@@ -43,12 +43,12 @@ private class CustomerFeedbackDomainTest {
     
     @isTest
     static void testOnValidateEmailRequiredWhenClosed() {
-        ece__Customer_Feedback__c feedback = new ece__Customer_Feedback__c(
-            ece__Customer_Name__c = 'Test Customer',
-            ece__Feedback_Type__c = 'Bug',
-            ece__Description__c = 'Test description',
-            ece__Status__c = 'Closed'
-            // ece__Customer_Email__c deliberately not set
+        Customer_Feedback__c feedback = new Customer_Feedback__c(
+            Customer_Name__c = 'Test Customer',
+            Feedback_Type__c = 'Bug',
+            Description__c = 'Test description',
+            Status__c = 'Closed'
+            // Customer_Email__c deliberately not set
         );
         
         Test.startTest();
@@ -64,41 +64,41 @@ private class CustomerFeedbackDomainTest {
     
     @isTest
     static void testChangeStatusValid() {
-        ece__Customer_Feedback__c feedback = new ece__Customer_Feedback__c(
-            ece__Customer_Name__c = 'Test Customer',
-            ece__Customer_Email__c = 'test@example.com',
-            ece__Feedback_Type__c = 'Bug',
-            ece__Description__c = 'Test description',
-            ece__Status__c = 'New'
+        Customer_Feedback__c feedback = new Customer_Feedback__c(
+            Customer_Name__c = 'Test Customer',
+            Customer_Email__c = 'test@example.com',
+            Feedback_Type__c = 'Bug',
+            Description__c = 'Test description',
+            Status__c = 'New'
         );
         insert feedback;
         
         Test.startTest();
         fflib_ISObjectUnitOfWork uow = Application.UnitOfWork.newInstance();
-        CustomerFeedbackDomain domain = new CustomerFeedbackDomain(new List<ece__Customer_Feedback__c>{feedback});
+        CustomerFeedbackDomain domain = new CustomerFeedbackDomain(new List<Customer_Feedback__c>{feedback});
         domain.changeStatus('In Progress', uow);
         uow.commitWork();
         Test.stopTest();
         
-        feedback = [SELECT ece__Status__c FROM ece__Customer_Feedback__c WHERE Id = :feedback.Id];
-        System.assertEquals('In Progress', feedback.ece__Status__c, 'Status should be updated');
+        feedback = [SELECT Status__c FROM Customer_Feedback__c WHERE Id = :feedback.Id];
+        System.assertEquals('In Progress', feedback.Status__c, 'Status should be updated');
     }
     
     @isTest
     static void testChangeStatusInvalid() {
-        ece__Customer_Feedback__c feedback = new ece__Customer_Feedback__c(
-            ece__Customer_Name__c = 'Test Customer',
-            ece__Customer_Email__c = 'test@example.com',
-            ece__Feedback_Type__c = 'Bug',
-            ece__Description__c = 'Test description',
-            ece__Status__c = 'New'
+        Customer_Feedback__c feedback = new Customer_Feedback__c(
+            Customer_Name__c = 'Test Customer',
+            Customer_Email__c = 'test@example.com',
+            Feedback_Type__c = 'Bug',
+            Description__c = 'Test description',
+            Status__c = 'New'
         );
         insert feedback;
         
         Test.startTest();
         try {
             fflib_ISObjectUnitOfWork uow = Application.UnitOfWork.newInstance();
-            CustomerFeedbackDomain domain = new CustomerFeedbackDomain(new List<ece__Customer_Feedback__c>{feedback});
+            CustomerFeedbackDomain domain = new CustomerFeedbackDomain(new List<Customer_Feedback__c>{feedback});
             domain.changeStatus('Invalid Status', uow);
             System.assert(false, 'Should have thrown domain exception');
         } catch (CustomerFeedbackDomain.DomainException e) {
@@ -110,19 +110,19 @@ private class CustomerFeedbackDomainTest {
     
     @isTest
     static void testChangeStatusFromClosed() {
-        ece__Customer_Feedback__c feedback = new ece__Customer_Feedback__c(
-            ece__Customer_Name__c = 'Test Customer',
-            ece__Customer_Email__c = 'test@example.com',
-            ece__Feedback_Type__c = 'Bug',
-            ece__Description__c = 'Test description',
-            ece__Status__c = 'Closed'
+        Customer_Feedback__c feedback = new Customer_Feedback__c(
+            Customer_Name__c = 'Test Customer',
+            Customer_Email__c = 'test@example.com',
+            Feedback_Type__c = 'Bug',
+            Description__c = 'Test description',
+            Status__c = 'Closed'
         );
         insert feedback;
         
         Test.startTest();
         try {
             fflib_ISObjectUnitOfWork uow = Application.UnitOfWork.newInstance();
-            CustomerFeedbackDomain domain = new CustomerFeedbackDomain(new List<ece__Customer_Feedback__c>{feedback});
+            CustomerFeedbackDomain domain = new CustomerFeedbackDomain(new List<Customer_Feedback__c>{feedback});
             domain.changeStatus('New', uow);
             System.assert(false, 'Should have thrown domain exception');
         } catch (CustomerFeedbackDomain.DomainException e) {
@@ -134,45 +134,45 @@ private class CustomerFeedbackDomainTest {
     
     @isTest
     static void testEscalateFeedback() {
-        ece__Customer_Feedback__c feedback = new ece__Customer_Feedback__c(
-            ece__Customer_Name__c = 'Test Customer',
-            ece__Customer_Email__c = 'test@example.com',
-            ece__Feedback_Type__c = 'Bug',
-            ece__Description__c = 'Test description',
-            ece__Status__c = 'New'
+        Customer_Feedback__c feedback = new Customer_Feedback__c(
+            Customer_Name__c = 'Test Customer',
+            Customer_Email__c = 'test@example.com',
+            Feedback_Type__c = 'Bug',
+            Description__c = 'Test description',
+            Status__c = 'New'
         );
         insert feedback;
         
         Test.startTest();
         fflib_ISObjectUnitOfWork uow = Application.UnitOfWork.newInstance();
-        CustomerFeedbackDomain domain = new CustomerFeedbackDomain(new List<ece__Customer_Feedback__c>{feedback});
+        CustomerFeedbackDomain domain = new CustomerFeedbackDomain(new List<Customer_Feedback__c>{feedback});
         domain.escalateFeedback(uow);
         uow.commitWork();
         Test.stopTest();
         
-        feedback = [SELECT ece__Status__c FROM ece__Customer_Feedback__c WHERE Id = :feedback.Id];
-        System.assertEquals('In Progress', feedback.ece__Status__c, 'Bug feedback should be escalated to In Progress');
+        feedback = [SELECT Status__c FROM Customer_Feedback__c WHERE Id = :feedback.Id];
+        System.assertEquals('In Progress', feedback.Status__c, 'Bug feedback should be escalated to In Progress');
     }
     
     @isTest
     static void testAssignToAgent() {
-        ece__Customer_Feedback__c feedback = new ece__Customer_Feedback__c(
-            ece__Customer_Name__c = 'Test Customer',
-            ece__Customer_Email__c = 'test@example.com',
-            ece__Feedback_Type__c = 'Bug',
-            ece__Description__c = 'Test description',
-            ece__Status__c = 'New'
+        Customer_Feedback__c feedback = new Customer_Feedback__c(
+            Customer_Name__c = 'Test Customer',
+            Customer_Email__c = 'test@example.com',
+            Feedback_Type__c = 'Bug',
+            Description__c = 'Test description',
+            Status__c = 'New'
         );
         insert feedback;
         
         Test.startTest();
         fflib_ISObjectUnitOfWork uow = Application.UnitOfWork.newInstance();
-        CustomerFeedbackDomain domain = new CustomerFeedbackDomain(new List<ece__Customer_Feedback__c>{feedback});
+        CustomerFeedbackDomain domain = new CustomerFeedbackDomain(new List<Customer_Feedback__c>{feedback});
         domain.assignToAgent('someAgentId', uow);
         uow.commitWork();
         Test.stopTest();
         
-        feedback = [SELECT ece__Status__c FROM ece__Customer_Feedback__c WHERE Id = :feedback.Id];
-        System.assertEquals('In Progress', feedback.ece__Status__c, 'Assigned feedback should be In Progress');
+        feedback = [SELECT Status__c FROM Customer_Feedback__c WHERE Id = :feedback.Id];
+        System.assertEquals('In Progress', feedback.Status__c, 'Assigned feedback should be In Progress');
     }
 } 
