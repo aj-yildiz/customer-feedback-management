@@ -29,12 +29,10 @@ public class Application {
                 IFeedbackNotifier.class => EmailFeedbackNotifier.class
             });
             
-    // Application context
-    public static final fflib_Application.ApplicationContext context = 
-        new fflib_Application.ApplicationContext();
-        
-    static {
-        // register feedback notifier
-        context.registerFactory(IFeedbackNotifier.class, new fflib_Application.FactoryFactory(EmailFeedbackNotifier.class));
+    // Get the feedback notifier instance
+    public static IFeedbackNotifier Notifier {
+        get {
+            return (IFeedbackNotifier)Service.newInstance(IFeedbackNotifier.class);
+        }
     }
 } 
