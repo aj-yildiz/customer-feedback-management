@@ -34,6 +34,9 @@ public with sharing class CustomerFeedbackController {
             if (recordData.containsKey('Status__c')) {
                 newFeedback.Status__c = (String)recordData.get('Status__c');
             }
+            if (recordData.containsKey('Priority__c')) {
+                newFeedback.Priority__c = (String)recordData.get('Priority__c');
+            }
             
             // Use Unit of Work pattern for DML
             fflib_ISObjectUnitOfWork uow = Application.UnitOfWork.newInstance();

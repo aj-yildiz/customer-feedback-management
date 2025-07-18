@@ -75,23 +75,23 @@ export default class FeedbackList extends LightningElement {
             let typeIcon = 'utility:question';
             let typeText = 'General Inquiry';
             
-            if (fb.ece__Feedback_Type__c) {
-                if (fb.ece__Feedback_Type__c === 'Bug') {
+            if (fb.Feedback_Type__c) {
+                if (fb.Feedback_Type__c === 'Bug') {
                     typeIcon = 'utility:bug';
                     typeText = 'Bug';
-                } else if (fb.ece__Feedback_Type__c === 'Feature Request') {
+                } else if (fb.Feedback_Type__c === 'Feature Request') {
                     typeIcon = 'utility:light_bulb';
                     typeText = 'Feature Request';
-                } else if (fb.ece__Feedback_Type__c === 'General Inquiry') {
+                } else if (fb.Feedback_Type__c === 'General Inquiry') {
                     typeIcon = 'utility:question';
                     typeText = 'General Inquiry';
                 } else {
-                    typeText = fb.ece__Feedback_Type__c;
+                    typeText = fb.Feedback_Type__c;
                 }
             }
             
             let statusBadgeClass = 'slds-theme_shade';
-            let statusLabel = fb.ece__Status__c || 'New';
+            let statusLabel = fb.Status__c || 'New';
             
             if (statusLabel === 'New') {
                 statusBadgeClass = 'slds-theme_shade';
@@ -101,7 +101,18 @@ export default class FeedbackList extends LightningElement {
                 statusBadgeClass = 'slds-theme_success';
             }
             
-            let description = fb.ece__Description__c || 'No description provided';
+            let priorityBadgeClass = 'slds-theme_default';
+            let priorityLabel = fb.Priority__c || 'Medium';
+            
+            if (priorityLabel === 'Low') {
+                priorityBadgeClass = 'slds-theme_default';
+            } else if (priorityLabel === 'Medium') {
+                priorityBadgeClass = 'slds-theme_warning';
+            } else if (priorityLabel === 'High') {
+                priorityBadgeClass = 'slds-theme_error';
+            }
+            
+            let description = fb.Description__c || 'No description provided';
             
             return {
                 ...fb,
@@ -109,6 +120,8 @@ export default class FeedbackList extends LightningElement {
                 typeText,
                 statusBadgeClass,
                 statusLabel,
+                priorityBadgeClass,
+                priorityLabel,
                 displayDescription: description
             };
         });
@@ -118,11 +131,11 @@ export default class FeedbackList extends LightningElement {
         let filtered = this.feedbacks;
         
         if (this.selectedStatus !== 'All Statuses') {
-            filtered = filtered.filter(fb => fb.ece__Status__c === this.selectedStatus);
+            filtered = filtered.filter(fb => fb.Status__c === this.selectedStatus);
         }
         
         if (this.selectedType !== 'All Types') {
-            filtered = filtered.filter(fb => fb.ece__Feedback_Type__c === this.selectedType);
+            filtered = filtered.filter(fb => fb.Feedback_Type__c === this.selectedType);
         }
         
         return filtered;

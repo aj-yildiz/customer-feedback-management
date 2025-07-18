@@ -11,7 +11,7 @@ import EMAIL_FIELD from '@salesforce/schema/User.Email';
 export default class FeedbackForm extends LightningElement {
     @track feedbackType = 'General Inquiry';
     @track description = '';
-    @track status = 'New';
+    @track priority = 'Medium';
     @track isLoading = false;
     @api feedbackCreatedCallback;
 
@@ -33,11 +33,11 @@ export default class FeedbackForm extends LightningElement {
         ];
     }
 
-    get statusOptions() {
+    get priorityOptions() {
         return [
-            { label: 'New', value: 'New' },
-            { label: 'In Progress', value: 'In Progress' },
-            { label: 'Resolved', value: 'Resolved' }
+            { label: 'Low', value: 'Low' },
+            { label: 'Medium', value: 'Medium' },
+            { label: 'High', value: 'High' }
         ];
     }
 
@@ -49,18 +49,19 @@ export default class FeedbackForm extends LightningElement {
             this.feedbackType = value;
         } else if (field === 'description') {
             this.description = value;
-        } else if (field === 'status') {
-            this.status = value;
         }
     }
 
+    handlePriorityChange(event) {
+        this.priority = event.target.value;
+    }
+
     validateForm() {
-        const allValid = [
-            ...this.template.querySelectorAll('lightning-combobox,lightning-textarea')
-        ].reduce((validSoFar, inputCmp) => {
-            inputCmp.reportValidity();
-            return validSoFar && inputCmp.checkValidity();
-        }, true);
+        const allValid = [...this.template.querySelectorAll('lightning-combobox, lightning-textarea')]
+            .reduce((validSoFar, inputCmp) => {
+                inputCmp.reportValidity();
+                return validSoFar && inputCmp.checkValidity();
+            }, true);
 
         if (!this.feedbackType) {
             this.dispatchEvent(new ShowToastEvent({
@@ -71,19 +72,19 @@ export default class FeedbackForm extends LightningElement {
             return false;
         }
 
-        if (!this.description || this.description.trim() === '') {
+        if (!this.description || this.description.trim().length === 0) {
             this.dispatchEvent(new ShowToastEvent({
                 title: 'Validation Error',
-                message: 'Please enter a description.',
+                message: 'Please provide a description.',
                 variant: 'error'
             }));
             return false;
         }
 
-        if (!this.status) {
+        if (!this.priority) {
             this.dispatchEvent(new ShowToastEvent({
                 title: 'Validation Error',
-                message: 'Please select a status.',
+                message: 'Please select a priority.',
                 variant: 'error'
             }));
             return false;
@@ -91,8 +92,6 @@ export default class FeedbackForm extends LightningElement {
 
         return allValid;
     }
-
-
 
     async handleSubmit() {
         if (!this.validateForm()) {
@@ -115,13 +114,13 @@ export default class FeedbackForm extends LightningElement {
         this.isLoading = true;
 
         const feedbackData = {
-            'ece__Feedback_Type__c': this.feedbackType,
-            'ece__Description__c': this.description.trim(),
-            'ece__Status__c': this.status,
-            'ece__Customer_Name__c': customerName,
-            'ece__Customer_Email__c': customerEmail
+            'Feedback_Type__c': this.feedbackType,
+            'Description__c': this.description.trim(),
+            'Priority__c': this.priority,
+            'Customer_Name__c': customerName,
+            'Customer_Email__c': customerEmail
         };
-        
+
         try {
             const result = await createFeedback({ recordData: feedbackData });
             
@@ -130,28 +129,26 @@ export default class FeedbackForm extends LightningElement {
                 message: 'Feedback submitted successfully!',
                 variant: 'success'
             }));
-            
-            const payload = {
-                recordId: result,
-                action: 'create',
-                data: feedbackData
-            };
-            publish(this.messageContext, FEEDBACK_CHANNEL, payload);
-            
+
+            // Reset form after successful submission
             this.resetForm();
-            
+
+            // Publish message to update other components
+            publish(this.messageContext, FEEDBACK_CHANNEL, {
+                action: 'create',
+                recordId: result
+            });
+
+            // Call callback if provided
             if (this.feedbackCreatedCallback) {
                 this.feedbackCreatedCallback();
             }
-            
-            this.dispatchEvent(new CustomEvent('feedbackcreated', { 
-                detail: { id: result, ...feedbackData } 
-            }));
-            
+
         } catch (error) {
+            console.error('Error creating feedback:', error);
             this.dispatchEvent(new ShowToastEvent({
-                title: 'Error Submitting Feedback',
-                message: error.body && error.body.message ? error.body.message : 'Unknown error occurred.',
+                title: 'Error',
+                message: error.body?.message || 'An error occurred while submitting feedback.',
                 variant: 'error'
             }));
         } finally {
@@ -162,15 +159,18 @@ export default class FeedbackForm extends LightningElement {
     resetForm() {
         this.feedbackType = 'General Inquiry';
         this.description = '';
-        this.status = 'New';
+        this.priority = 'Medium';
         
-        // Reset form validation
-        const inputFields = this.template.querySelectorAll('lightning-combobox,lightning-textarea');
-        if (inputFields) {
-            inputFields.forEach(field => {
-                field.setCustomValidity('');
-                field.reportValidity();
-            });
-        }
+        // Reset form field validation states
+        const formElements = this.template.querySelectorAll('lightning-combobox, lightning-textarea');
+        formElements.forEach(element => {
+            element.setCustomValidity('');
+            element.reportValidity();
+        });
+    }
+
+    @api
+    reset() {
+        this.resetForm();
     }
 }

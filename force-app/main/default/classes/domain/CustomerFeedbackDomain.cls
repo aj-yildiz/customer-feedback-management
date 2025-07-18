@@ -15,6 +15,9 @@ public class CustomerFeedbackDomain extends fflib_SObjectDomain {
             if(feedback.Status__c == null) {
                 feedback.Status__c = 'New';
             }
+            if(feedback.Priority__c == null) {
+                feedback.Priority__c = 'Medium';
+            }
         }
     }
     
@@ -39,6 +42,12 @@ public class CustomerFeedbackDomain extends fflib_SObjectDomain {
             Set<String> validTypes = new Set<String>{'Bug', 'Feature Request', 'General Inquiry'};
             if(feedback.Feedback_Type__c != null && !validTypes.contains(feedback.Feedback_Type__c)) {
                 feedback.Feedback_Type__c.addError('Invalid feedback type');
+            }
+            
+            // Validate priority is valid
+            Set<String> validPriorities = new Set<String>{'Low', 'Medium', 'High'};
+            if(feedback.Priority__c != null && !validPriorities.contains(feedback.Priority__c)) {
+                feedback.Priority__c.addError('Invalid priority value');
             }
         }
     }

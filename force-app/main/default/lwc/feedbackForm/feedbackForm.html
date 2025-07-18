@@ -56,16 +56,17 @@
                         </lightning-textarea>
                     </div>
                     
-                    <!-- Status -->
-                    <span class="form-section-heading">Status <span style="color: red;">*</span></span>
+                    <!-- Priority -->
+                    <span class="form-section-heading">Priority <span style="color: red;">*</span></span>
                     <div class="slds-form-element">
                         <lightning-combobox
-                            name="status"
-                            label="Status"
-                            value={status}
-                            options={statusOptions}
-                            onchange={handleInputChange}
-                            data-id="status"
+                            name="priority"
+                            label="Priority"
+                            value={priority}
+                            placeholder="Select Priority"
+                            options={priorityOptions}
+                            onchange={handlePriorityChange}
+                            data-id="priority"
                             required
                             disabled={isLoading}>
                         </lightning-combobox>
