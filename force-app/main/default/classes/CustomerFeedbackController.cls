@@ -49,7 +49,7 @@ public with sharing class CustomerFeedbackController {
             throw new AuraHandledException('Error creating feedback: ' + e.getMessage());
         }
     }
-
+    
     @AuraEnabled
     public static void updateFeedbackStatus(String feedbackId, String newStatus) {
         try {

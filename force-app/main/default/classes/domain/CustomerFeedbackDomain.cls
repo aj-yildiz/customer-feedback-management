@@ -1,4 +1,4 @@
-public class CustomerFeedbackDomain extends fflib_SObjectDomain {
+public virtual class CustomerFeedbackDomain extends fflib_SObjectDomain {
     
     public CustomerFeedbackDomain(List<Customer_Feedback__c> records) { 
         super((List<SObject>) records); 
@@ -33,10 +33,7 @@ public class CustomerFeedbackDomain extends fflib_SObjectDomain {
                 feedback.Customer_Email__c.addError('Email is required when closing feedback');
             }
             
-            // Validate customer name is provided
-            if(String.isBlank(feedback.Customer_Name__c)) {
-                feedback.Customer_Name__c.addError('Customer name is required');
-            }
+            // CUSTOMER NAME VALIDATION REMOVED - not required for portal users
             
             // Validate feedback type is valid
             Set<String> validTypes = new Set<String>{'Bug', 'Feature Request', 'General Inquiry'};
@@ -52,8 +49,8 @@ public class CustomerFeedbackDomain extends fflib_SObjectDomain {
         }
     }
     
-    public override void onAfterInsert() {
-        Application.Notifier.notifyOnNewFeedback((List<Customer_Feedback__c>)Records);
+    public virtual override void onAfterInsert() {
+        // Email notifications removed
     }
     
     public void changeStatus(String newStatus, fflib_ISObjectUnitOfWork uow) {

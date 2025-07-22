@@ -1,35 +1,19 @@
-import { LightningElement, track, api, wire } from 'lwc';
+import { LightningElement, track } from 'lwc';
 import createFeedback from '@salesforce/apex/CustomerFeedbackController.createFeedback';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
-import { publish, MessageContext } from 'lightning/messageService';
-import FEEDBACK_CHANNEL from '@salesforce/messageChannel/FeedbackChannel__c';
-import { getRecord } from 'lightning/uiRecordApi';
-import USER_ID from '@salesforce/user/Id';
-import NAME_FIELD from '@salesforce/schema/User.Name';
-import EMAIL_FIELD from '@salesforce/schema/User.Email';
+import { NavigationMixin } from 'lightning/navigation';
 
-export default class FeedbackForm extends LightningElement {
-    @track feedbackType = 'General Inquiry';
+export default class FeedbackForm extends NavigationMixin(LightningElement) {
+    @track feedbackType = '';
+    @track priority = '';
     @track description = '';
-    @track priority = 'Medium';
-    @track isLoading = false;
-    @api feedbackCreatedCallback;
+    @track isSubmitting = false;
 
-    @wire(MessageContext)
-    messageContext;
-
-    @wire(getRecord, { recordId: USER_ID, fields: [NAME_FIELD, EMAIL_FIELD] })
-    user;
-
-    connectedCallback() {
-        // Component initialization if needed
-    }
-
-    get typeOptions() {
+    get feedbackTypeOptions() {
         return [
-            { label: '🐞 Bug', value: 'Bug' },
-            { label: '💡 Feature Request', value: 'Feature Request' },
-            { label: '❓ General Inquiry', value: 'General Inquiry' }
+            { label: 'Bug', value: 'Bug' },
+            { label: 'Feature Request', value: 'Feature Request' },
+            { label: 'General Inquiry', value: 'General Inquiry' }
         ];
     }
 
@@ -42,55 +26,16 @@ export default class FeedbackForm extends LightningElement {
     }
 
     handleInputChange(event) {
-        const field = event.target.dataset.id;
+        const field = event.target.name;
         const value = event.target.value;
         
         if (field === 'feedbackType') {
             this.feedbackType = value;
+        } else if (field === 'priority') {
+            this.priority = value;
         } else if (field === 'description') {
             this.description = value;
         }
-    }
-
-    handlePriorityChange(event) {
-        this.priority = event.target.value;
-    }
-
-    validateForm() {
-        const allValid = [...this.template.querySelectorAll('lightning-combobox, lightning-textarea')]
-            .reduce((validSoFar, inputCmp) => {
-                inputCmp.reportValidity();
-                return validSoFar && inputCmp.checkValidity();
-            }, true);
-
-        if (!this.feedbackType) {
-            this.dispatchEvent(new ShowToastEvent({
-                title: 'Validation Error',
-                message: 'Please select a feedback type.',
-                variant: 'error'
-            }));
-            return false;
-        }
-
-        if (!this.description || this.description.trim().length === 0) {
-            this.dispatchEvent(new ShowToastEvent({
-                title: 'Validation Error',
-                message: 'Please provide a description.',
-                variant: 'error'
-            }));
-            return false;
-        }
-
-        if (!this.priority) {
-            this.dispatchEvent(new ShowToastEvent({
-                title: 'Validation Error',
-                message: 'Please select a priority.',
-                variant: 'error'
-            }));
-            return false;
-        }
-
-        return allValid;
     }
 
     async handleSubmit() {
@@ -98,79 +43,57 @@ export default class FeedbackForm extends LightningElement {
             return;
         }
 
-        // Extract customer name and email from wired user data
-        const customerName = this.user?.data?.fields?.Name?.value || 'No name provided';
-        const customerEmail = this.user?.data?.fields?.Email?.value || 'No email provided';
-
-        if (!this.user?.data) {
-            this.dispatchEvent(new ShowToastEvent({
-                title: 'Warning',
-                message: 'User information is still loading. Please try again.',
-                variant: 'warning'
-            }));
-            return;
-        }
-
-        this.isLoading = true;
-
-        const feedbackData = {
-            'Feedback_Type__c': this.feedbackType,
-            'Description__c': this.description.trim(),
-            'Priority__c': this.priority,
-            'Customer_Name__c': customerName,
-            'Customer_Email__c': customerEmail
-        };
+        this.isSubmitting = true;
 
         try {
-            const result = await createFeedback({ recordData: feedbackData });
-            
-            this.dispatchEvent(new ShowToastEvent({
-                title: 'Success!',
-                message: 'Feedback submitted successfully!',
-                variant: 'success'
-            }));
+            const recordData = {
+                Feedback_Type__c: this.feedbackType,
+                Priority__c: this.priority,
+                Description__c: this.description,
+                Status__c: 'New'
+            };
 
-            // Reset form after successful submission
+            const result = await createFeedback({ recordData });
+
+            this.showToast('Success', 'Feedback submitted successfully!', 'success');
             this.resetForm();
 
-            // Publish message to update other components
-            publish(this.messageContext, FEEDBACK_CHANNEL, {
-                action: 'create',
-                recordId: result
-            });
-
-            // Call callback if provided
-            if (this.feedbackCreatedCallback) {
-                this.feedbackCreatedCallback();
-            }
-
         } catch (error) {
-            console.error('Error creating feedback:', error);
-            this.dispatchEvent(new ShowToastEvent({
-                title: 'Error',
-                message: error.body?.message || 'An error occurred while submitting feedback.',
-                variant: 'error'
-            }));
+            console.error('Error submitting feedback:', error);
+            this.showToast('Error', 'Failed to submit feedback: ' + error.body.message, 'error');
         } finally {
-            this.isLoading = false;
+            this.isSubmitting = false;
         }
+    }
+
+    validateForm() {
+        const allValid = [
+            ...this.template.querySelectorAll('lightning-combobox'),
+            ...this.template.querySelectorAll('lightning-textarea')
+        ].reduce((validSoFar, inputCmp) => {
+            inputCmp.reportValidity();
+            return validSoFar && inputCmp.checkValidity();
+        }, true);
+
+        if (!allValid) {
+            this.showToast('Error', 'Please complete all required fields', 'error');
+        }
+
+        return allValid;
     }
 
     resetForm() {
-        this.feedbackType = 'General Inquiry';
+        this.feedbackType = '';
+        this.priority = '';
         this.description = '';
-        this.priority = 'Medium';
-        
-        // Reset form field validation states
-        const formElements = this.template.querySelectorAll('lightning-combobox, lightning-textarea');
-        formElements.forEach(element => {
-            element.setCustomValidity('');
-            element.reportValidity();
-        });
     }
 
-    @api
-    reset() {
-        this.resetForm();
+    showToast(title, message, variant) {
+        const event = new ShowToastEvent({
+            title,
+            message,
+            variant
+        });
+        this.dispatchEvent(event);
     }
 }

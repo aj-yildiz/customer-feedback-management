@@ -22,17 +22,20 @@ public class Application {
                 Customer_Feedback__c.SObjectType => CustomerFeedbackDomain.Constructor.class
             });
             
-    // Configure and create the ServiceFactory for this Application
-    public static final fflib_Application.ServiceFactory Service =
-        new fflib_Application.ServiceFactory(
-            new Map<Type, Type> {
-                IFeedbackNotifier.class => EmailFeedbackNotifier.class
-            });
+    // Service factory instance
+    private static fflib_Application.ServiceFactory serviceInstance;
             
-    // Get the feedback notifier instance
-    public static IFeedbackNotifier Notifier {
-        get {
-            return (IFeedbackNotifier)Service.newInstance(IFeedbackNotifier.class);
+    // Get/Set the ServiceFactory (the setter is used for mocking in tests)
+    public static fflib_Application.ServiceFactory Service {
+        get { 
+            if (serviceInstance == null) {
+                serviceInstance = new fflib_Application.ServiceFactory(
+                    new Map<Type, Type> {
+                        // Email notifier removed for Lightning App
+                    });
+            }
+            return serviceInstance; 
         }
+        set { serviceInstance = value; }
     }
 } 

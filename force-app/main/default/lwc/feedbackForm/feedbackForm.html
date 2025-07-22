@@ -1,90 +1,72 @@
 <template>
     <div class="feedback-form-wrapper">
-        <article class="slds-card feedback-form-card-green">
-            <div class="slds-card__header slds-grid" style="align-items:center; justify-content:space-between; position:relative;">
-                <header class="slds-media slds-media_center slds-has-flexi-truncate">
-                    <div class="slds-media__figure">
-                        <lightning-icon icon-name="utility:feedback" size="small" class="slds-m-right_small"></lightning-icon>
-                    </div>
-                    <div class="slds-media__body">
-                        <h2 class="slds-card__header-title slds-text-heading_medium">Create Feedback</h2>
-                    </div>
-                </header>
-
+        <div class="feedback-form-card">
+            <!-- Form Header with emoji -->
+            <div class="form-header">
+                <h2>💬 Submit Feedback</h2>
+                <p>Thank you for being part of our community. Your feedback helps us improve and create better experiences for everyone.</p>
             </div>
             
-            <div class="slds-card__body slds-card__body_inner slds-p-around_large">
-                <!-- Loading Indicator -->
-                <template if:true={isLoading}>
-                    <div class="slds-text-align_center slds-m-bottom_medium">
-                        <lightning-spinner alternative-text="Submitting feedback..." size="small"></lightning-spinner>
-                        <p class="slds-text-body_small slds-m-top_x-small">Creating your feedback...</p>
-                    </div>
-                </template>
-                
-                <!-- Form Fields -->
-                <div class="form-section slds-form">
+            <form>
                     <!-- Feedback Type -->
-                    <span class="form-section-heading">Feedback Type <span style="color: red;">*</span></span>
-                    <div class="slds-form-element">
+                <div class="form-field">
                         <lightning-combobox
                             name="feedbackType"
-                            label="Feedback Type"
+                        label="📝 Feedback Type"
                             value={feedbackType}
-                            options={typeOptions}
+                        placeholder="Select feedback type"
+                        options={feedbackTypeOptions}
+                        onchange={handleInputChange}
+                        style="--slds-c-input-color-text: #000; --slds-c-input-color-background: #fff;"
+                        required>
+                    </lightning-combobox>
+                </div>
+
+                <!-- Priority -->
+                <div class="form-field">
+                    <lightning-combobox
+                        name="priority"
+                        label="⚡ Priority"
+                        value={priority}
+                        placeholder="Select priority"
+                        options={priorityOptions}
                             onchange={handleInputChange}
-                            data-id="feedbackType"
-                            required
-                            disabled={isLoading}
-                            class="slds-m-bottom_medium">
+                        style="--slds-c-input-color-text: #000; --slds-c-input-color-background: #fff;"
+                        required>
                         </lightning-combobox>
                     </div>
                     
                     <!-- Description -->
-                    <span class="form-section-heading">Description <span style="color: red;">*</span></span>
-                    <div class="slds-form-element">
+                <div class="form-field">
                         <lightning-textarea
                             name="description"
-                            label="Description"
+                        label="📄 Description"
                             value={description}
+                        placeholder="Please describe your feedback..."
                             onchange={handleInputChange}
-                            data-id="description"
-                            required
-                            disabled={isLoading}
-                            placeholder="Please provide detailed information about your feedback..."
-                            max-length="1000">
+                        max-length="1000"
+                        style="--slds-c-textarea-color-text: #000000; --slds-c-textarea-color-background: #ffffff; --slds-c-input-color-text: #000000; --slds-c-input-color-background: #ffffff; color: #000000; background-color: #ffffff; min-height: 120px;"
+                        required>
                         </lightning-textarea>
-                    </div>
-                    
-                    <!-- Priority -->
-                    <span class="form-section-heading">Priority <span style="color: red;">*</span></span>
-                    <div class="slds-form-element">
-                        <lightning-combobox
-                            name="priority"
-                            label="Priority"
-                            value={priority}
-                            placeholder="Select Priority"
-                            options={priorityOptions}
-                            onchange={handlePriorityChange}
-                            data-id="priority"
-                            required
-                            disabled={isLoading}>
-                        </lightning-combobox>
-                    </div>
                 </div>
                 
                 <!-- Submit Button -->
-                <div class="form-actions slds-m-top_large">
                     <lightning-button
                         variant="brand"
                         label="Submit Feedback"
                         onclick={handleSubmit}
-                        disabled={isLoading}
-                        class="submit-button"
-                        style="--sds-c-button-brand-color-background: #00C853; --sds-c-button-brand-color-border: #00C853; --sds-c-button-brand-color-background-hover: #00B74F; --sds-c-button-brand-color-border-hover: #00B74F; --sds-c-button-text-color: white;">
+                    disabled={isSubmitting}
+                    class="submit-button">
                     </lightning-button>
+
+                <!-- Loading Indicator -->
+                <template if:true={isSubmitting}>
+                    <div class="loading-indicator">
+                        <lightning-spinner alternative-text="Submitting..." size="small"></lightning-spinner>
+                        <p>Submitting your feedback...</p>
                 </div>
+                </template>
+            </form>
             </div>
-        </article>
     </div>
 </template>

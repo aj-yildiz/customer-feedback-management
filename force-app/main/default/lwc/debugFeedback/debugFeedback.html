@@ -1,0 +1,27 @@
+<template>
+    <lightning-card title="Debug Feedback Test" icon-name="utility:bug">
+        <div class="slds-m-around_medium">
+            <template if:true={error}>
+                <div class="slds-notify slds-notify_alert slds-theme_error slds-m-bottom_medium">
+                    <h3>Error:</h3>
+                    <p>{error.body.message}</p>
+                </div>
+            </template>
+            
+            <template if:true={hasData}>
+                <h3>Success! Found {feedbackData.length} records:</h3>
+                <ul class="slds-list_dotted">
+                    <template for:each={feedbackData} for:item="feedback">
+                        <li key={feedback.Id}>{feedback.Customer_Name__c} - {feedback.Status__c}</li>
+                    </template>
+                </ul>
+            </template>
+            
+            <template if:false={hasData}>
+                <template if:false={error}>
+                    <p>No data found or still loading...</p>
+                </template>
+            </template>
+        </div>
+    </lightning-card>
+</template> 

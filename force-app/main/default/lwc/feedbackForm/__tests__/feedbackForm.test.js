@@ -159,8 +159,8 @@ describe('c-feedback-form', () => {
         await Promise.resolve();
 
         // Check if loading elements can be found (they are conditional)
-        const cardBody = element.shadowRoot.querySelector('.slds-card__body');
-        expect(cardBody).toBeTruthy();
+        const formWrapper = element.shadowRoot.querySelector('.feedback-form-wrapper');
+        expect(formWrapper).toBeTruthy();
     });
 
     it('shows form validation messages', async () => {
