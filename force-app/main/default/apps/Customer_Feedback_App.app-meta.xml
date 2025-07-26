@@ -10,6 +10,7 @@
     <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
     <label>Customer Feedback App</label>
     <navType>Standard</navType>
+    <tabs>Escalation_Monitor</tabs>
     <tabs>Submit_Feedback</tabs>
     <tabs>Manage_Feedback</tabs>
     <tabs>standard-Home</tabs>

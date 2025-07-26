@@ -7,22 +7,12 @@
                 <identifier>escalationMonitor1</identifier>
             </componentInstance>
         </itemInstances>
-        <name>column1</name>
+        <name>main</name>
         <type>Region</type>
     </flexiPageRegions>
-    <flexiPageRegions>
-        <itemInstances>
-            <componentInstance>
-                <componentName>feedbackList</componentName>
-                <identifier>feedbackList1</identifier>
-            </componentInstance>
-        </itemInstances>
-        <name>column2</name>
-        <type>Region</type>
-    </flexiPageRegions>
-    <masterLabel>Manage Feedback</masterLabel>
+    <masterLabel>Escalation Monitor</masterLabel>
     <template>
-        <name>flexipage:appHomeTemplateTwoColumns</name>
+        <name>flexipage:defaultAppHomeTemplate</name>
     </template>
     <type>AppPage</type>
 </FlexiPage> 

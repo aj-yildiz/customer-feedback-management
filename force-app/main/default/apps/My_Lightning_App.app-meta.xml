@@ -9,7 +9,6 @@
     <label>My Lightning App</label>
     <navType>Standard</navType>
     <tabs>My_Lightning_App</tabs>
-    <tabs>Customer_Feedback__c</tabs>
     <tabs>standard-Home</tabs>
     <uiType>Lightning</uiType>
 </CustomApplication> 

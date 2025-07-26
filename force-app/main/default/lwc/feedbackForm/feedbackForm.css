@@ -142,8 +142,8 @@ input::placeholder,
 textarea::placeholder {
     color: #888 !important;
     opacity: 1;
-}
-
+    }
+    
 /* force-app/main/default/lwc/feedbackForm/feedbackForm.css */
 /* ------------------------------------------------------ */
 /* Target Lightning Base Components (lightning-combobox, lightning-textarea) */
@@ -155,23 +155,23 @@ textarea::placeholder {
   --slds-c-textarea-color-background: #ffffff;
   --slds-c-combobox-color-text: #000000;
   --slds-c-combobox-color-background: #ffffff;
-}
-
+    }
+    
 /* Also target any standard inputs if they exist */
 :host input,
 :host textarea,
 :host select {
   background-color: #ffffff !important;
   color: #000000 !important;
-}
-
+    }
+    
 /* Target lightning base components specifically */
 :host lightning-combobox,
 :host lightning-textarea {
   --slds-c-input-text-color: #000000;
   --slds-c-input-color-background: #ffffff;
-}
-
+    }
+    
 /* Additional specific targeting for textarea visibility */
 :host lightning-textarea textarea,
 :host lightning-textarea ::slotted(textarea),
@@ -189,32 +189,32 @@ textarea::placeholder {
   --slds-c-input-color-background: #ffffff;
   --lwc-colorTextInput: #000000;
   --lwc-colorBackgroundInput: #ffffff;
-}
-
+    }
+    
 /* FORCE BLACK TEXT IN TEXTAREA - HIGHEST SPECIFICITY */
 :host lightning-textarea textarea {
   color: #000000 !important;
   background-color: #ffffff !important;
   caret-color: #000000 !important;
-}
-
+    }
+    
 /* Target the actual textarea element inside lightning-textarea */
 :host lightning-textarea .slds-textarea {
   color: #000000 !important;
   background-color: #ffffff !important;
-}
-
+    }
+    
 /* Additional fallback selectors */
 :host .slds-textarea {
   color: #000000 !important;
   background-color: #ffffff !important;
-}
-
+    }
+    
 :host textarea {
   color: #000000 !important;
   background-color: #ffffff !important;
-}
-
+    }
+    
 /* Override any form field styles for textarea */
 :host .form-field textarea,
 :host .form-field .slds-textarea {
@@ -275,8 +275,8 @@ textarea::placeholder {
     .feedback-form-card {
         padding: 1.5rem;
         margin: 0.5rem;
-    }
-    
+}
+
     .form-header h2 {
         font-size: 1.5rem;
     }

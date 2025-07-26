@@ -45,10 +45,11 @@ private class CustomerFeedbackControllerTest {
         testData.put('Status__c', 'New');
         
         Test.startTest();
+        // Call the createFeedback method
         String result = CustomerFeedbackController.createFeedback(testData);
-        Test.stopTest();
         
-        System.assertNotEquals(null, result, 'Should return record Id');
+        // Verify the result  
+        System.assertNotEquals(null, result, 'Feedback ID should not be null');
         System.assert(result.length() > 0, 'Record Id should not be empty');
         
         Customer_Feedback__c created = [SELECT Customer_Name__c FROM Customer_Feedback__c WHERE Id = :result];

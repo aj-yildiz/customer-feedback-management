@@ -50,6 +50,14 @@
                     Description
                 </div>
                 <div class="table-header-cell">
+                    <lightning-icon icon-name="utility:clock" size="x-small"></lightning-icon>
+                    Days Old
+                </div>
+                <div class="table-header-cell">
+                    <lightning-icon icon-name="utility:warning" size="x-small"></lightning-icon>
+                    Escalation
+                </div>
+                <div class="table-header-cell">
                     <lightning-icon icon-name="utility:info" size="x-small"></lightning-icon>
                     Status
                 </div>
@@ -85,6 +93,23 @@
                         <!-- Description -->
                         <div class={feedback.descriptionClass}>
                             {feedback.displayDescription}
+                        </div>
+                        
+                        <!-- Days Since Created -->
+                        <div class="feedback-days">
+                            <span class="days-badge">
+                                {feedback.Days_Since_Created__c} days
+                            </span>
+                        </div>
+                        
+                        <!-- Escalation Required -->
+                        <div class="feedback-escalation">
+                            <template if:true={feedback.Escalation_Required__c}>
+                                <span class="escalation-required">⚠️ Required</span>
+                            </template>
+                            <template if:false={feedback.Escalation_Required__c}>
+                                <span class="escalation-not-required">✅ Normal</span>
+                            </template>
                         </div>
                         
                         <!-- Status -->

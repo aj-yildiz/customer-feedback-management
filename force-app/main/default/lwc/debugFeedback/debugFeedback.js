@@ -1,5 +1,5 @@
 import { LightningElement, wire } from 'lwc';
-import getAllFeedback from '@salesforce/apex/CustomerFeedbackController.getAllFeedback';
+import getAllFeedback from '@salesforce/apex/SimpleCustomerFeedbackController.getAllFeedback';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 export default class DebugFeedback extends LightningElement {

@@ -31,7 +31,7 @@ public class Application {
             if (serviceInstance == null) {
                 serviceInstance = new fflib_Application.ServiceFactory(
                     new Map<Type, Type> {
-                        // Email notifier removed for Lightning App
+                        CustomerFeedbackService.class => CustomerFeedbackService.class
                     });
             }
             return serviceInstance; 

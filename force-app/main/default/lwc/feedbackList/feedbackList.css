@@ -95,7 +95,7 @@
 .table-header {
     background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
     display: grid;
-    grid-template-columns: 120px 80px 100px 1fr 120px;
+    grid-template-columns: 100px 100px 100px 1fr 100px 120px 120px;
     padding: 1rem;
     gap: 1rem;
     align-items: center;
@@ -119,7 +119,7 @@
 /* Table rows */
 .feedback-row {
     display: grid;
-    grid-template-columns: 120px 80px 100px 1fr 120px;
+    grid-template-columns: 100px 100px 100px 1fr 100px 120px 120px;
     padding: 1rem;
     gap: 1rem;
     align-items: center;
@@ -362,4 +362,41 @@
 
 .table-container::-webkit-scrollbar-thumb:hover {
     background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+}
+
+/* Days Since Created Styling */
+.feedback-days {
+    text-align: center;
+}
+
+.days-badge {
+    background: #e3f2fd;
+    color: #1976d2;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+/* Escalation Required Styling */
+.feedback-escalation {
+    text-align: center;
+}
+
+.escalation-required {
+    background: #ffebee;
+    color: #d32f2f;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.escalation-not-required {
+    background: #e8f5e8;
+    color: #388e3c;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
 }
