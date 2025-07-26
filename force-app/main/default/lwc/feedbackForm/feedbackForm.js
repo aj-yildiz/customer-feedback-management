@@ -1,5 +1,5 @@
 import { LightningElement, track } from 'lwc';
-import createFeedback from '@salesforce/apex/SimpleCustomerFeedbackController.createFeedback';
+import createFeedback from '@salesforce/apex/CustomerFeedbackController.createFeedback';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { NavigationMixin } from 'lightning/navigation';
 

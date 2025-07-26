@@ -1,5 +1,5 @@
 import { LightningElement, wire, track } from 'lwc';
-import getAllFeedback from '@salesforce/apex/SimpleCustomerFeedbackController.getAllFeedback';
+import getAllFeedback from '@salesforce/apex/CustomerFeedbackController.getAllFeedback';
 import { refreshApex } from '@salesforce/apex';
 import { subscribe, MessageContext } from 'lightning/messageService';
 import FEEDBACK_CHANNEL from '@salesforce/messageChannel/FeedbackChannel__c';

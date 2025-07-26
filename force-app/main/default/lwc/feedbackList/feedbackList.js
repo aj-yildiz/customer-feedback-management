@@ -1,5 +1,5 @@
 import { LightningElement, wire, track } from 'lwc';
-import getAllFeedback from '@salesforce/apex/SimpleCustomerFeedbackController.getAllFeedback';
+import getAllFeedback from '@salesforce/apex/CustomerFeedbackController.getAllFeedback';
 import { refreshApex } from '@salesforce/apex';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
