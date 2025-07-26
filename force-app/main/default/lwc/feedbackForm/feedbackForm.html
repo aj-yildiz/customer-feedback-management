@@ -35,6 +35,20 @@
                         required>
                         </lightning-combobox>
                     </div>
+
+                    <!-- Email -->
+                <div class="form-field">
+                    <lightning-input
+                        name="email"
+                        label="📧 Your Email"
+                        value={email}
+                        placeholder="Enter your email address"
+                        type="email"
+                        onchange={handleInputChange}
+                        style="--slds-c-input-color-text: #000; --slds-c-input-color-background: #fff;"
+                        required>
+                    </lightning-input>
+                </div>
                     
                     <!-- Description -->
                 <div class="form-field">

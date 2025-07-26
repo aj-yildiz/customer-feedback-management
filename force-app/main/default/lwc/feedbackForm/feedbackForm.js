@@ -1,13 +1,19 @@
-import { LightningElement, track } from 'lwc';
+import { LightningElement, track, wire } from 'lwc';
 import createFeedback from '@salesforce/apex/CustomerFeedbackController.createFeedback';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { NavigationMixin } from 'lightning/navigation';
+import { publish, MessageContext } from 'lightning/messageService';
+import FEEDBACK_CHANNEL from '@salesforce/messageChannel/FeedbackChannel__c';
 
 export default class FeedbackForm extends NavigationMixin(LightningElement) {
     @track feedbackType = '';
     @track priority = '';
+    @track email = '';
     @track description = '';
     @track isSubmitting = false;
+    
+    @wire(MessageContext)
+    messageContext;
 
     get feedbackTypeOptions() {
         return [
@@ -33,6 +39,8 @@ export default class FeedbackForm extends NavigationMixin(LightningElement) {
             this.feedbackType = value;
         } else if (field === 'priority') {
             this.priority = value;
+        } else if (field === 'email') {
+            this.email = value;
         } else if (field === 'description') {
             this.description = value;
         }
@@ -49,6 +57,7 @@ export default class FeedbackForm extends NavigationMixin(LightningElement) {
             const recordData = {
                 Feedback_Type__c: this.feedbackType,
                 Priority__c: this.priority,
+                Customer_Email__c: this.email,
                 Description__c: this.description,
                 Status__c: 'New'
             };
@@ -57,6 +66,9 @@ export default class FeedbackForm extends NavigationMixin(LightningElement) {
 
             this.showToast('Success', 'Feedback submitted successfully!', 'success');
             this.resetForm();
+            
+            // Notify other components that feedback was created
+            this.notifyFeedbackCreated();
 
         } catch (error) {
             console.error('Error submitting feedback:', error);
@@ -66,9 +78,17 @@ export default class FeedbackForm extends NavigationMixin(LightningElement) {
         }
     }
 
+    notifyFeedbackCreated() {
+        const message = {
+            type: 'feedbackCreated'
+        };
+        publish(this.messageContext, FEEDBACK_CHANNEL, message);
+    }
+
     validateForm() {
         const allValid = [
             ...this.template.querySelectorAll('lightning-combobox'),
+            ...this.template.querySelectorAll('lightning-input'),
             ...this.template.querySelectorAll('lightning-textarea')
         ].reduce((validSoFar, inputCmp) => {
             inputCmp.reportValidity();
@@ -85,6 +105,7 @@ export default class FeedbackForm extends NavigationMixin(LightningElement) {
     resetForm() {
         this.feedbackType = '';
         this.priority = '';
+        this.email = '';
         this.description = '';
     }
 
