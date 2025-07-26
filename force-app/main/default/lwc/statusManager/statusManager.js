@@ -31,7 +31,7 @@ export default class StatusManager extends LightningElement {
 
     get feedbackOptions() {
         return this.feedbackList.map(feedback => ({
-            label: `${feedback.Name} - ${feedback.Description__c?.substring(0, 40) || 'No description'}...`,
+            label: `${feedback.Name} - ${feedback.Description__c?.substring(0, 30) || 'No description'}...`,
             value: feedback.Id
         }));
     }
@@ -101,9 +101,6 @@ export default class StatusManager extends LightningElement {
 
     async handleStatusChange(event) {
         const newStatus = event.detail.value;
-        
-        // Reset the dropdown to show placeholder
-        event.target.value = '';
         
         if (!this.hasSelectedFeedback) {
             this.showToast('Error', 'Please select a feedback record first', 'error');

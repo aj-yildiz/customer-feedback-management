@@ -2,8 +2,6 @@
     max-width: 500px;
     min-width: 450px;
     font-family: 'Salesforce Sans', Arial, sans-serif;
-    position: relative;
-    z-index: 1;
 }
 
 /* Main Card */
@@ -14,7 +12,6 @@
     border: 1px solid rgba(255, 255, 255, 0.2);
     overflow: visible;
     transition: all 0.3s ease;
-    position: relative;
 }
 
 .status-card:hover {
@@ -59,8 +56,6 @@
 .section {
     padding: 1.5rem;
     border-bottom: 1px solid #f1f5f9;
-    position: relative;
-    overflow: visible;
 }
 
 .section:last-child {
@@ -162,8 +157,6 @@
     --slds-c-combobox-color-background: #ffffff;
     --slds-c-combobox-font-size: 1rem;
     width: 100%;
-    position: relative;
-    z-index: 10;
 }
 
 .feedback-selector lightning-combobox,
@@ -171,8 +164,6 @@
     --slds-c-combobox-input-height: 3rem;
     --slds-c-combobox-input-font-size: 1rem;
     --slds-c-combobox-input-padding-horizontal: 1rem;
-    position: relative;
-    z-index: 10;
 }
 
 /* Override Salesforce combobox styles for better visibility */
@@ -182,7 +173,6 @@
     padding: 0.75rem 1rem !important;
     height: 3rem !important;
     line-height: 1.5 !important;
-    border-radius: 12px !important;
 }
 
 .feedback-selector .slds-form-element__label,
@@ -191,39 +181,6 @@
     font-weight: 600 !important;
     color: #374151 !important;
     margin-bottom: 0.5rem !important;
-}
-
-/* Ensure dropdowns appear above other elements */
-.feedback-selector .slds-combobox,
-.status-selector .slds-combobox {
-    position: relative;
-    z-index: 1000;
-}
-
-.feedback-selector .slds-listbox,
-.status-selector .slds-listbox {
-    position: absolute;
-    z-index: 1001 !important;
-    max-height: 300px !important;
-    overflow-y: auto !important;
-    width: 100% !important;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
-    border-radius: 8px !important;
-}
-
-.feedback-selector .slds-listbox__option,
-.status-selector .slds-listbox__option {
-    padding: 0.75rem 1rem !important;
-    font-size: 1rem !important;
-    line-height: 1.4 !important;
-    white-space: nowrap !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-}
-
-.feedback-selector .slds-listbox__option:hover,
-.status-selector .slds-listbox__option:hover {
-    background-color: #f3f4f6 !important;
 }
 
 /* No Transitions */
