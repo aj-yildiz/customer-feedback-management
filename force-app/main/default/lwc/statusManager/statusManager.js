@@ -1,4 +1,5 @@
 import { LightningElement, api, track, wire } from 'lwc';
+import getAllFeedback from '@salesforce/apex/CustomerFeedbackController.getAllFeedback';
 import updateFeedbackStatus from '@salesforce/apex/CustomerFeedbackController.updateFeedbackStatus';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { refreshApex } from '@salesforce/apex';
@@ -9,9 +10,38 @@ export default class StatusManager extends LightningElement {
     @api feedbackRecord;
     @track isUpdating = false;
     @track showStatusHistory = false;
+    @track feedbackList = [];
+    @track selectedFeedbackId = '';
+    wiredFeedbackResult;
     
     @wire(MessageContext)
     messageContext;
+
+    @wire(getAllFeedback)
+    wiredFeedback(result) {
+        this.wiredFeedbackResult = result;
+        if (result.data) {
+            this.feedbackList = result.data;
+            // Auto-select first feedback if none selected
+            if (!this.selectedFeedbackId && result.data.length > 0) {
+                this.selectedFeedbackId = result.data[0].Id;
+            }
+        }
+    }
+
+    get feedbackOptions() {
+        return this.feedbackList.map(feedback => ({
+            label: `${feedback.Name} - ${feedback.Description__c?.substring(0, 30) || 'No description'}...`,
+            value: feedback.Id
+        }));
+    }
+
+    get currentFeedback() {
+        if (this.feedbackRecord) {
+            return this.feedbackRecord;
+        }
+        return this.feedbackList.find(f => f.Id === this.selectedFeedbackId) || {};
+    }
 
     get statusOptions() {
         return [
@@ -23,7 +53,7 @@ export default class StatusManager extends LightningElement {
     }
 
     get currentStatus() {
-        return this.feedbackRecord?.Status__c || 'New';
+        return this.currentFeedback?.Status__c || 'New';
     }
 
     get canTransitionTo() {
@@ -54,15 +84,28 @@ export default class StatusManager extends LightningElement {
     }
 
     get daysInCurrentStatus() {
-        if (!this.feedbackRecord?.LastModifiedDate) return 0;
-        const lastModified = new Date(this.feedbackRecord.LastModifiedDate);
+        if (!this.currentFeedback?.LastModifiedDate) return 0;
+        const lastModified = new Date(this.currentFeedback.LastModifiedDate);
         const now = new Date();
         const diffTime = Math.abs(now - lastModified);
         return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     }
 
+    get hasSelectedFeedback() {
+        return this.currentFeedback && this.currentFeedback.Id;
+    }
+
+    handleFeedbackSelection(event) {
+        this.selectedFeedbackId = event.detail.value;
+    }
+
     async handleStatusChange(event) {
         const newStatus = event.detail.value;
+        
+        if (!this.hasSelectedFeedback) {
+            this.showToast('Error', 'Please select a feedback record first', 'error');
+            return;
+        }
         
         if (!this.canTransitionTo.includes(newStatus)) {
             this.showToast('Error', `Cannot transition from ${this.currentStatus} to ${newStatus}`, 'error');
@@ -73,7 +116,7 @@ export default class StatusManager extends LightningElement {
 
         try {
             await updateFeedbackStatus({ 
-                feedbackId: this.feedbackRecord.Id, 
+                feedbackId: this.currentFeedback.Id, 
                 newStatus: newStatus 
             });
 
@@ -82,13 +125,16 @@ export default class StatusManager extends LightningElement {
                 'success'
             );
 
+            // Refresh the data
+            await refreshApex(this.wiredFeedbackResult);
+
             // Notify other components
             this.publishStatusChange(newStatus);
 
             // Fire event to parent component
             this.dispatchEvent(new CustomEvent('statuschanged', {
                 detail: { 
-                    feedbackId: this.feedbackRecord.Id,
+                    feedbackId: this.currentFeedback.Id,
                     oldStatus: this.currentStatus,
                     newStatus: newStatus
                 }
@@ -107,7 +153,7 @@ export default class StatusManager extends LightningElement {
     publishStatusChange(newStatus) {
         const message = {
             type: 'statusChanged',
-            feedbackId: this.feedbackRecord.Id,
+            feedbackId: this.currentFeedback.Id,
             newStatus: newStatus
         };
         publish(this.messageContext, FEEDBACK_CHANNEL, message);
