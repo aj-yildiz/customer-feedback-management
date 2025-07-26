@@ -3,6 +3,12 @@
     <flexiPageRegions>
         <itemInstances>
             <componentInstance>
+                <componentName>statusManager</componentName>
+                <identifier>c_statusManager</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
                 <componentName>escalationMonitor</componentName>
                 <identifier>c_escalationMonitor</identifier>
             </componentInstance>
@@ -17,12 +23,6 @@
                 <identifier>c_feedbackList</identifier>
             </componentInstance>
         </itemInstances>
-        <itemInstances>
-            <componentInstance>
-                <componentName>statusManager</componentName>
-                <identifier>c_statusManager</identifier>
-            </componentInstance>
-        </itemInstances>
         <name>column2</name>
         <type>Region</type>
     </flexiPageRegions>
@@ -31,4 +31,4 @@
         <name>flexipage:appHomeTemplateTwoColumns</name>
     </template>
     <type>AppPage</type>
-</FlexiPage> 
+</FlexiPage>
