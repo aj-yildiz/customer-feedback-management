@@ -4,7 +4,7 @@
         <itemInstances>
             <componentInstance>
                 <componentName>escalationMonitor</componentName>
-                <identifier>escalationMonitor1</identifier>
+                <identifier>c_escalationMonitor</identifier>
             </componentInstance>
         </itemInstances>
         <name>column1</name>
@@ -14,7 +14,13 @@
         <itemInstances>
             <componentInstance>
                 <componentName>feedbackList</componentName>
-                <identifier>feedbackList1</identifier>
+                <identifier>c_feedbackList</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentName>statusManager</componentName>
+                <identifier>c_statusManager</identifier>
             </componentInstance>
         </itemInstances>
         <name>column2</name>

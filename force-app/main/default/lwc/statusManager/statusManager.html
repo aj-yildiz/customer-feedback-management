@@ -1,0 +1,79 @@
+<template>
+    <div class="status-manager">
+        <lightning-card title="Status Management" icon-name="standard:process">
+            
+            <!-- Current Status Display -->
+            <div class="slds-p-horizontal_medium slds-p-bottom_small">
+                <div class="current-status-container">
+                    <div class={statusClass}>
+                        <lightning-icon icon-name="utility:check" size="x-small" class="status-icon"></lightning-icon>
+                        <span class="status-text">{currentStatus}</span>
+                    </div>
+                    <div class="status-info">
+                        <span class="days-text">{daysInCurrentStatus} days in this status</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Status Transition -->
+            <div slot="actions">
+                <lightning-button-icon 
+                    icon-name="utility:clock"
+                    alternative-text="Status History"
+                    title="Toggle Status History"
+                    onclick={toggleStatusHistory}>
+                </lightning-button-icon>
+            </div>
+
+            <div class="slds-p-horizontal_medium">
+                <template if:true={availableStatusOptions.length}>
+                    <div class="status-transition">
+                        <lightning-combobox
+                            name="statusTransition"
+                            label="Transition to Status"
+                            placeholder="Select new status..."
+                            options={availableStatusOptions}
+                            onchange={handleStatusChange}
+                            disabled={isUpdating}
+                            variant="label-stacked">
+                        </lightning-combobox>
+                    </div>
+                </template>
+
+                <template if:false={availableStatusOptions.length}>
+                    <div class="no-transitions">
+                        <lightning-icon icon-name="utility:info" size="small"></lightning-icon>
+                        <span>No status transitions available from {currentStatus}</span>
+                    </div>
+                </template>
+
+                <!-- Loading State -->
+                <template if:true={isUpdating}>
+                    <div class="slds-p-top_small">
+                        <lightning-spinner alternative-text="Updating status..." size="small"></lightning-spinner>
+                    </div>
+                </template>
+            </div>
+
+            <!-- Status History (expandable) -->
+            <template if:true={showStatusHistory}>
+                <div class="slds-p-horizontal_medium slds-p-top_medium">
+                    <div class="status-history">
+                        <h3 class="slds-text-heading_small slds-p-bottom_small">Status History</h3>
+                        <div class="history-item">
+                            <div class="history-status">Created as New</div>
+                            <div class="history-date">{feedbackRecord.CreatedDate}</div>
+                        </div>
+                        <template if:true={feedbackRecord.LastModifiedDate}>
+                            <div class="history-item">
+                                <div class="history-status">Last Modified</div>
+                                <div class="history-date">{feedbackRecord.LastModifiedDate}</div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </template>
+
+        </lightning-card>
+    </div>
+</template>
