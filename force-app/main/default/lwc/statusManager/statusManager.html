@@ -77,6 +77,28 @@
                     </template>
                 </div>
 
+                <!-- Reply Section -->
+                <div class="section reply-section">
+                    <div class="reply-header">
+                        <lightning-icon icon-name="utility:email" size="x-small" class="reply-icon"></lightning-icon>
+                        <h4 class="reply-title">Send Reply</h4>
+                    </div>
+                    <lightning-textarea
+                        label="Reply"
+                        value={replyText}
+                        onchange={handleReplyChange}
+                        placeholder="Type your reply to the customer..."
+                        class="reply-textarea">
+                    </lightning-textarea>
+                    <lightning-button
+                        label="Send"
+                        onclick={handleSend}
+                        disabled={isSendingReply}
+                        variant="brand"
+                        class="send-button">
+                    </lightning-button>
+                </div>
+
                 <!-- Loading State -->
                 <template if:true={isUpdating}>
                     <div class="section loading-section">

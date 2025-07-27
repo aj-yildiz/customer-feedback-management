@@ -1,6 +1,7 @@
 import { LightningElement, api, track, wire } from 'lwc';
 import getAllFeedback from '@salesforce/apex/CustomerFeedbackController.getAllFeedback';
 import updateFeedbackStatus from '@salesforce/apex/CustomerFeedbackController.updateFeedbackStatus';
+import saveResponse from '@salesforce/apex/FeedbackResponseController.saveResponse';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { refreshApex } from '@salesforce/apex';
 import { publish, MessageContext } from 'lightning/messageService';
@@ -12,6 +13,8 @@ export default class StatusManager extends LightningElement {
     @track showStatusHistory = false;
     @track feedbackList = [];
     @track selectedFeedbackId = '';
+    @track replyText = '';
+    @track isSendingReply = false;
     wiredFeedbackResult;
     
     @wire(MessageContext)
@@ -95,8 +98,50 @@ export default class StatusManager extends LightningElement {
         return this.currentFeedback && this.currentFeedback.Id;
     }
 
+    get canSendReply() {
+        return this.hasSelectedFeedback && this.replyText.trim().length > 0;
+    }
+
     handleFeedbackSelection(event) {
         this.selectedFeedbackId = event.detail.value;
+        this.replyText = ''; // Clear reply when switching feedback
+        
+        // Notify feedbackInbox about the selected feedback
+        this.publishFeedbackSelected();
+    }
+
+    handleReplyChange(event) {
+        this.replyText = event.target.value;
+    }
+
+    async handleSend() {
+        if (!this.canSendReply) {
+            this.showToast('Error', 'Please enter a reply message', 'error');
+            return;
+        }
+
+        this.isSendingReply = true;
+
+        try {
+            await saveResponse({
+                feedbackId: this.currentFeedback.Id,
+                message: this.replyText
+            });
+
+            this.showToast('Success', 'Reply sent successfully!', 'success');
+            this.replyText = '';
+
+            // Notify other components
+            this.publishReplyAdded();
+
+        } catch (error) {
+            this.showToast('Error', 
+                `Failed to send reply: ${error.body?.message || error.message}`, 
+                'error'
+            );
+        } finally {
+            this.isSendingReply = false;
+        }
     }
 
     async handleStatusChange(event) {
@@ -155,6 +200,22 @@ export default class StatusManager extends LightningElement {
             type: 'statusChanged',
             feedbackId: this.currentFeedback.Id,
             newStatus: newStatus
+        };
+        publish(this.messageContext, FEEDBACK_CHANNEL, message);
+    }
+
+    publishReplyAdded() {
+        const message = {
+            type: 'replyAdded',
+            feedbackId: this.currentFeedback.Id
+        };
+        publish(this.messageContext, FEEDBACK_CHANNEL, message);
+    }
+
+    publishFeedbackSelected() {
+        const message = {
+            type: 'feedbackSelected',
+            feedbackId: this.selectedFeedbackId
         };
         publish(this.messageContext, FEEDBACK_CHANNEL, message);
     }
