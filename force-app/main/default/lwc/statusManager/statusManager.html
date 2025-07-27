@@ -77,25 +77,21 @@
                     </template>
                 </div>
 
-                <!-- Agent Response Section -->
+                <!-- Reply Section -->
                 <div class="section reply-section">
                     <div class="reply-header">
-                        <lightning-icon icon-name="utility:note" size="x-small" class="reply-icon"></lightning-icon>
-                        <h4 class="reply-title">Log Agent Response</h4>
-                    </div>
-                    <div class="agent-info">
-                        <lightning-icon icon-name="utility:info" size="x-small" class="info-icon-small"></lightning-icon>
-                        <span class="info-text">Record what you told the customer via phone/email</span>
+                        <lightning-icon icon-name="utility:email" size="x-small" class="reply-icon"></lightning-icon>
+                        <h4 class="reply-title">Send Reply</h4>
                     </div>
                     <lightning-textarea
-                        label="Response Details"
+                        label="Reply"
                         value={replyText}
                         onchange={handleReplyChange}
-                        placeholder="What did you tell the customer? (e.g., 'Told customer we're investigating and will update by Friday')"
+                        placeholder="Type your reply to the customer..."
                         class="reply-textarea">
                     </lightning-textarea>
                     <lightning-button
-                        label="Log Response"
+                        label="Send"
                         onclick={handleSend}
                         disabled={isSendingReply}
                         variant="brand"

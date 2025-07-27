@@ -4,7 +4,7 @@ import updateFeedbackStatus from '@salesforce/apex/CustomerFeedbackController.up
 import saveResponse from '@salesforce/apex/FeedbackResponseController.saveResponse';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { refreshApex } from '@salesforce/apex';
-import { publish, subscribe, unsubscribe, MessageContext } from 'lightning/messageService';
+import { publish, MessageContext } from 'lightning/messageService';
 import FEEDBACK_CHANNEL from '@salesforce/messageChannel/FeedbackChannel__c';
 
 export default class StatusManager extends LightningElement {
@@ -16,7 +16,6 @@ export default class StatusManager extends LightningElement {
     @track replyText = '';
     @track isSendingReply = false;
     wiredFeedbackResult;
-    subscription = null;
     
     @wire(MessageContext)
     messageContext;
@@ -29,48 +28,6 @@ export default class StatusManager extends LightningElement {
             // Auto-select first feedback if none selected
             if (!this.selectedFeedbackId && result.data.length > 0) {
                 this.selectedFeedbackId = result.data[0].Id;
-                // Notify feedbackInbox about the initial selection
-                setTimeout(() => {
-                    this.publishFeedbackSelected();
-                }, 200);
-            }
-        }
-    }
-
-    connectedCallback() {
-        this.subscribeToMessageChannel();
-    }
-
-    disconnectedCallback() {
-        this.unsubscribeToMessageChannel();
-    }
-
-    subscribeToMessageChannel() {
-        if (!this.subscription) {
-            this.subscription = subscribe(
-                this.messageContext,
-                FEEDBACK_CHANNEL,
-                (message) => this.handleMessage(message)
-            );
-        }
-    }
-
-    unsubscribeToMessageChannel() {
-        if (this.subscription) {
-            unsubscribe(this.subscription);
-            this.subscription = null;
-        }
-    }
-
-    handleMessage(message) {
-        console.log('StatusManager received message:', message);
-        if (message.type === 'requestCurrentFeedback') {
-            // Respond with current selection
-            console.log('Responding with current feedback:', this.selectedFeedbackId);
-            if (this.selectedFeedbackId) {
-                setTimeout(() => {
-                    this.publishFeedbackSelected();
-                }, 100);
             }
         }
     }
@@ -150,7 +107,6 @@ export default class StatusManager extends LightningElement {
         this.replyText = ''; // Clear reply when switching feedback
         
         // Notify feedbackInbox about the selected feedback
-        console.log('Feedback selection changed to:', this.selectedFeedbackId);
         this.publishFeedbackSelected();
     }
 
@@ -160,7 +116,7 @@ export default class StatusManager extends LightningElement {
 
     async handleSend() {
         if (!this.canSendReply) {
-            this.showToast('Error', 'Please enter a response to log', 'error');
+            this.showToast('Error', 'Please enter a reply message', 'error');
             return;
         }
 
@@ -172,7 +128,7 @@ export default class StatusManager extends LightningElement {
                 message: this.replyText
             });
 
-            this.showToast('Success', 'Agent response logged successfully!', 'success');
+            this.showToast('Success', 'Reply sent successfully!', 'success');
             this.replyText = '';
 
             // Notify other components
@@ -180,7 +136,7 @@ export default class StatusManager extends LightningElement {
 
         } catch (error) {
             this.showToast('Error', 
-                `Failed to log response: ${error.body?.message || error.message}`, 
+                `Failed to send reply: ${error.body?.message || error.message}`, 
                 'error'
             );
         } finally {
@@ -253,7 +209,6 @@ export default class StatusManager extends LightningElement {
             type: 'replyAdded',
             feedbackId: this.currentFeedback.Id
         };
-        console.log('Publishing reply added for:', this.currentFeedback.Id);
         publish(this.messageContext, FEEDBACK_CHANNEL, message);
     }
 
@@ -262,7 +217,6 @@ export default class StatusManager extends LightningElement {
             type: 'feedbackSelected',
             feedbackId: this.selectedFeedbackId
         };
-        console.log('Publishing feedback selected:', this.selectedFeedbackId);
         publish(this.messageContext, FEEDBACK_CHANNEL, message);
     }
 

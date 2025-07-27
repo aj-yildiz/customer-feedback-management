@@ -201,7 +201,7 @@
     color: #d97706;
 }
 
-/* Agent Reply Section */
+/* Reply Section */
 .reply-section {
     background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
     border-radius: 12px;
@@ -226,29 +226,6 @@
     margin: 0;
 }
 
-.agent-info {
-    background: rgba(59, 130, 246, 0.1);
-    border: 1px solid rgba(59, 130, 246, 0.2);
-    border-radius: 8px;
-    padding: 0.75rem;
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.info-icon-small {
-    color: #3b82f6;
-    flex-shrink: 0;
-}
-
-.info-text {
-    color: #1e40af;
-    font-size: 0.875rem;
-    font-weight: 500;
-    line-height: 1.4;
-}
-
 .reply-textarea {
     margin-bottom: 1rem;
 }
@@ -261,8 +238,8 @@
 
 .send-button {
     width: 100%;
-    --slds-c-button-brand-color-background: linear-gradient(135deg, #1e40af 0%, #1d4ed8 100%);
-    --slds-c-button-brand-color-border: #1d4ed8;
+    --slds-c-button-brand-color-background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+    --slds-c-button-brand-color-border: #0284c7;
     border-radius: 8px;
     font-weight: 600;
 }
