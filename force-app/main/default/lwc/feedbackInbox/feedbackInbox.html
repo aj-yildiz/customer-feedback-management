@@ -1,55 +1,76 @@
 <template>
-    <div class="feedback-inbox">
-        <div class="inbox-card">
-            
-            <!-- Header -->
-            <div class="card-header">
-                <div class="header-content">
-                    <lightning-icon icon-name="utility:email" size="small" class="header-icon"></lightning-icon>
-                    <h3 class="header-title">Feedback Inbox</h3>
-                </div>
-                <div class="response-count">
-                    <span class="count-badge">{responseCount}</span>
-                </div>
-            </div>
+    <div class="inbox-container">
+        
+        <!-- Header -->
+        <div class="card-header">
+            <h3 class="header-title">
+                <lightning-icon icon-name="standard:timeline" size="small" class="header-icon"></lightning-icon>
+                Ticket History
+            </h3>
+            <template if:true={showInbox}>
+                <span class="ticket-name">({ticketName})</span>
+            </template>
+        </div>
 
-            <!-- Responses List -->
-            <div class="responses-container">
-                <template if:true={hasResponses}>
-                    <template for:each={responses} for:item="response">
-                        <div key={response.id} class="response-item">
-                            <div class="response-header">
-                                <div class="response-meta">
-                                    <lightning-icon icon-name="utility:user" size="x-small" class="user-icon"></lightning-icon>
-                                    <span class="created-by">{response.createdBy}</span>
+        <!-- Show history when recordId is available -->
+        <template if:true={showInbox}>
+
+            <!-- History Timeline -->
+            <template if:true={hasHistory}>
+                <div class="history-timeline">
+                    <template for:each={historyEntries} for:item="entry">
+                        <div key={entry.createdDate} class="history-entry">
+                            
+                            <!-- Timeline Dot -->
+                            <div class="timeline-dot">
+                                <span class="entry-icon">{entry.icon}</span>
+                            </div>
+                            
+                            <!-- Entry Content -->
+                            <div class="entry-content">
+                                <div class="entry-header">
+                                    <span class="entry-date">{entry.formattedDate} · {entry.formattedTime}</span>
+                                    <span class="entry-title">{entry.title}</span>
                                 </div>
-                                <div class="response-date">{response.formattedDate}</div>
+                                
+                                <template if:true={entry.description}>
+                                    <div class="entry-description">"{entry.description}"</div>
+                                </template>
                             </div>
-                            <div class="response-content">
-                                <p class="response-text">{response.message}</p>
-                            </div>
+                            
                         </div>
                     </template>
-                </template>
+                </div>
+            </template>
 
-                <!-- No Responses State -->
-                <template if:false={hasResponses}>
-                    <div class="empty-state">
-                        <lightning-icon icon-name="utility:comments" size="large" class="empty-icon"></lightning-icon>
-                        <h4 class="empty-title">No Responses Yet</h4>
-                        <p class="empty-description">Responses to this feedback will appear here</p>
-                    </div>
-                </template>
+            <!-- No History State -->
+            <template if:false={hasHistory}>
+                <div class="empty-state">
+                    <lightning-icon icon-name="standard:timeline" size="large" class="empty-icon"></lightning-icon>
+                    <h3 class="empty-title">No Activity Yet</h3>
+                    <p class="empty-description">Ticket activity and responses will appear here.</p>
+                </div>
+            </template>
 
-                <!-- Error State -->
-                <template if:true={error}>
-                    <div class="error-state">
-                        <lightning-icon icon-name="utility:error" size="medium" class="error-icon"></lightning-icon>
-                        <p class="error-message">Error loading responses: {error.body.message}</p>
-                    </div>
-                </template>
+            <!-- Error State -->
+            <template if:true={error}>
+                <div class="error-state">
+                    <lightning-icon icon-name="utility:error" size="large" class="error-icon"></lightning-icon>
+                    <h3 class="error-title">Error loading ticket history</h3>
+                    <p class="error-description">{error.body.message}</p>
+                </div>
+            </template>
+
+        </template>
+
+        <!-- No Feedback Selected State -->
+        <template if:false={showInbox}>
+            <div class="selection-state">
+                <lightning-icon icon-name="utility:record_lookup" size="large" class="selection-icon"></lightning-icon>
+                <h3 class="selection-title">Select a Feedback Record</h3>
+                <p class="selection-description">Choose a feedback record from the Status Manager to view ticket history.</p>
             </div>
+        </template>
 
-        </div>
     </div>
 </template> 

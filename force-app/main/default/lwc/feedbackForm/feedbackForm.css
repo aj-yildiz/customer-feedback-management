@@ -62,8 +62,12 @@
     background: rgba(255, 255, 255, 0.95) !important;
     border: 2px solid rgba(255, 255, 255, 0.3) !important;
     border-radius: 8px !important;
-    color: #cad5e6 !important;
     font-weight: 700;
+}
+
+/* Email field specific styling */
+:host .form-field .email-field::part(input) {
+    color: #222 !important;
 }
 
 .form-field .slds-form-element__control input:focus,
@@ -149,11 +153,11 @@ textarea::placeholder {
 /* Target Lightning Base Components (lightning-combobox, lightning-textarea) */
 /* Use CSS custom properties that Lightning components inherit */
 :host {
-  --slds-c-input-color-text: #000000;
+  --slds-c-input-text-color: #222;
+  --slds-c-combobox-text-color: #222;
+  --slds-c-textarea-text-color: #222;
   --slds-c-input-color-background: #ffffff;
-  --slds-c-textarea-color-text: #000000; 
   --slds-c-textarea-color-background: #ffffff;
-  --slds-c-combobox-color-text: #000000;
   --slds-c-combobox-color-background: #ffffff;
     }
     
@@ -168,7 +172,8 @@ textarea::placeholder {
 /* Target lightning base components specifically */
 :host lightning-combobox,
 :host lightning-textarea {
-  --slds-c-input-text-color: #000000;
+  --slds-c-combobox-text-color: #222;
+  --slds-c-textarea-text-color: #222;
   --slds-c-input-color-background: #ffffff;
     }
     
@@ -183,11 +188,11 @@ textarea::placeholder {
 
 /* Lightning textarea specific CSS variables */
 :host lightning-textarea {
-  --slds-c-textarea-color-text: #000000;
+  --slds-c-textarea-text-color: #222;
   --slds-c-textarea-color-background: #ffffff;
-  --slds-c-input-color-text: #000000;
+  --slds-c-input-text-color: #222;
   --slds-c-input-color-background: #ffffff;
-  --lwc-colorTextInput: #000000;
+  --lwc-colorTextInput: #222;
   --lwc-colorBackgroundInput: #ffffff;
     }
     
