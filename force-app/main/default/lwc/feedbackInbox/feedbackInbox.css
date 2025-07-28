@@ -24,7 +24,7 @@
 
 /* Header */
 .card-header {
-    background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
     padding: 1rem;
     display: flex;
@@ -76,7 +76,7 @@
     top: 2.5rem;
     bottom: -1.5rem;
     width: 2px;
-    background: #e0e0e0;
+    background: linear-gradient(180deg, #667eea 0%, #e0e0e0 100%);
     z-index: 1;
 }
 
@@ -85,7 +85,7 @@
     width: 2rem;
     height: 2rem;
     border-radius: 50%;
-    background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -93,7 +93,7 @@
     flex-shrink: 0;
     position: relative;
     z-index: 2;
-    box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
 }
 
 .entry-icon {
@@ -107,7 +107,7 @@
     background: #f8f9fa;
     border-radius: 8px;
     padding: 0.75rem;
-    border-left: 3px solid #4CAF50;
+    border-left: 3px solid #667eea;
     margin-top: 0.25rem;
 }
 
@@ -140,7 +140,7 @@
     background: white;
     padding: 0.5rem;
     border-radius: 4px;
-    border-left: 2px solid #e0e0e0;
+    border-left: 2px solid #a78bfa;
     font-size: 0.9rem;
 }
 

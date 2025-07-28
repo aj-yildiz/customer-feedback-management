@@ -1,4 +1,4 @@
-@isTest
+git add .@isTest
 private class CustomerFeedbackSelectorTest {
     
     @TestSetup
