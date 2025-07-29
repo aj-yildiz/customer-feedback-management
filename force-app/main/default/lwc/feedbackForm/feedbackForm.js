@@ -46,7 +46,7 @@ export default class FeedbackForm extends NavigationMixin(LightningElement) {
         }
     }
 
-    async handleSubmit() {
+    async handleSubmit() { // call the validateForm() method to validate the form
         if (!this.validateForm()) {
             return;
         }

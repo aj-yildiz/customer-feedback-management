@@ -110,7 +110,11 @@ public virtual class CustomerFeedbackService {
      * Complex business process: Process bulk feedback updates
      */
     public static void processBulkFeedbackUpdates(List<Map<String, Object>> feedbackUpdates) {
-        if (feedbackUpdates == null || feedbackUpdates.isEmpty()) {
+        if (feedbackUpdates == null) {
+            throw new CustomerFeedbackServiceException('Feedback updates cannot be null');
+        }
+        
+        if (feedbackUpdates.isEmpty()) {
             return;
         }
         
@@ -119,6 +123,7 @@ public virtual class CustomerFeedbackService {
         for (Map<String, Object> updateData : feedbackUpdates) {
             Id feedbackId = (Id) updateData.get('Id');
             String newStatus = (String) updateData.get('Status__c');
+            String newEmail = (String) updateData.get('Customer_Email__c');
             
             if (feedbackId != null && String.isNotBlank(newStatus)) {
                 Customer_Feedback__c feedback = ((CustomerFeedbackSelector) 
@@ -126,6 +131,12 @@ public virtual class CustomerFeedbackService {
                     .selectById(feedbackId);
                     
                 if (feedback != null) {
+                    // Update fields
+                    feedback.Status__c = newStatus;
+                    if (String.isNotBlank(newEmail)) {
+                        feedback.Customer_Email__c = newEmail;
+                    }
+                    
                     CustomerFeedbackDomain domain = new CustomerFeedbackDomain(new List<Customer_Feedback__c>{feedback});
                     domain.changeStatus(newStatus, uow);
                 }

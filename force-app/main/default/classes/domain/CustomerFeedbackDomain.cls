@@ -1,28 +1,22 @@
-// DOMAIN CLASS
-// encapsulate the domain logic for the Customer_Feedback__c object
-//   business rules for the object validations, triggers, handlers)
+// DOMAIN CLASS encapsulate the domain logic for the Customer_Feedback__c object
+// business rules for the object validations, triggers, handlers)
 
 
-//OUR CONSTRUCTOR 
+//OUR CONSTRUCTOR virtual so we can subclass it if needed.
 public virtual class CustomerFeedbackDomain extends fflib_SObjectDomain {
     // fflibSObjectDomain is a base class for all domain classes
     
     //I inherits from fflib_SObjectDomain, so you get a Records 
     //property (a List<SObject>) and lifecycle hooks (onApplyDefaults(), onValidate(), etc.).
-    //Declared virtual so you could subclass it if needed.
 
-    // Constructor takes a list of Customer_Feedback__c records
-    // Casts them to List<SObject> (required by the base class fflib_SObjectDomain)
-    // this gives access to the Records property in your logic
 
+    //inner consturtor to cast the list of Customer_Feedback__c records to a list of SObject
+    //Casts your strongly-typed List<Customer_Feedback__c> into the base List<SObject> that fflib_SObjectDomain expects.
 
     public CustomerFeedbackDomain(List<Customer_Feedback__c> records) { 
         super((List<SObject>) records);  // casting 
     }
-    // gets the arguments and passes it to the super constructor
 
-    //Casts your strongly-typed List<Customer_Feedback__c> into the base List<SObject> that fflib_SObjectDomain expects.
-    // create enw instance of a domain class thru 
     
    // a nested (inner) class named Constructor.
    // Its job is solely to give the FFLib Unit‑of‑Work framework a way to
@@ -41,16 +35,15 @@ public virtual class CustomerFeedbackDomain extends fflib_SObjectDomain {
 
     
     
-    // 1. onApplyDefaults() is called after the records are inserted, but before they are validated.
-    // 2. This is where you can set default values for the records.
-    // 3. In this case, we set the Status__c to 'New' and the Priority__c to 'Medium' if they are not set.
+    //  onApplyDefaults() is called after the records are inserted, but before they are validated.
+    //  This is where we set default values for the records.
     
-    // Before any DML (insert or update) occurs.
+    
     // Records is a List<SObject> that you cast to your typed list.
-    // You loop over each Customer_Feedback__c record in memory.
-    // If Status__c or Priority__c is still null, you assign a sensible default.
 
-    public override void onApplyDefaults() { // ` — Set default values before validation
+    //looping over the records and setting the default values for the records. before any DML 
+    //set default values for the records.
+    public override void onApplyDefaults() { 
         for(Customer_Feedback__c feedback : (List<Customer_Feedback__c>) Records) {
             if(feedback.Status__c == null) {
                 feedback.Status__c = 'New';
@@ -62,8 +55,8 @@ public virtual class CustomerFeedbackDomain extends fflib_SObjectDomain {
     }
     
     // we have onValidate method that gets called 
-    //  onValidate() is called after the records are inserted,
-    // but before  but before any DML actually hits the database.
+    // onValidate() is called after the records are inserted,
+    // before any DML actually hits the database.
     public override void onValidate() {
         for(Customer_Feedback__c feedback : (List<Customer_Feedback__c>) Records) {
             // Validate description is not blank
@@ -89,6 +82,7 @@ public virtual class CustomerFeedbackDomain extends fflib_SObjectDomain {
             }
         }
     } 
+
     
     // a domain‑level operation that bulk‑changes the Status__c field.
     // domain‑level operation that bulk‑changes the Status__c field on all the Customer_Feedback__c records in your Records list, 
@@ -102,6 +96,10 @@ public virtual class CustomerFeedbackDomain extends fflib_SObjectDomain {
         }
     }
     
+
+    // validateStatusTransition guards all status changes against your allowed set and the "no re‑open" rule.
+    // assignToAgent and escalateFeedback are higher‑level operations that change status and queue the updates in bulk.
+    // Any violation throws a DomainException, halting execution with a meaningful message.
     
     private void validateStatusTransition(String newStatus) {
         Set<String> validStatuses = new Set<String>{'New', 'In Progress', 'Resolved', 'Closed'};
@@ -117,6 +115,8 @@ public virtual class CustomerFeedbackDomain extends fflib_SObjectDomain {
         }
     }
     
+    // assignToAgent is a higher‑level operation that changes status and queues the updates in bulk.
+    // Any violation throws a DomainException, halting execution with a meaningful message.
     public void assignToAgent(String agentId, fflib_ISObjectUnitOfWork uow) {
         for(Customer_Feedback__c feedback : (List<Customer_Feedback__c>) Records) {
             // Would assign to agent if we had that field
@@ -125,6 +125,8 @@ public virtual class CustomerFeedbackDomain extends fflib_SObjectDomain {
         }
     }
     
+    // escalateFeedback is a higher‑level operation that changes status and queues the updates in bulk.
+    // Any violation throws a DomainException, halting execution with a meaningful message.
     public void escalateFeedback(fflib_ISObjectUnitOfWork uow) {
         for(Customer_Feedback__c feedback : (List<Customer_Feedback__c>) Records) {
             if(feedback.Feedback_Type__c == 'Bug') {
