@@ -14,7 +14,7 @@ public virtual class CustomerFeedbackDomain extends fflib_SObjectDomain {
     //Casts your strongly-typed List<Customer_Feedback__c> into the base List<SObject> that fflib_SObjectDomain expects.
 
     public CustomerFeedbackDomain(List<Customer_Feedback__c> records) { 
-        super((List<SObject>) records);  // casting 
+        super((List<SObject>) records);  // casting SObject to Customer_Feedback__c
     }
 
     

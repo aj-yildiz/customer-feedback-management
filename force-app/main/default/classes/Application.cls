@@ -4,7 +4,8 @@ public class Application {
     public static final fflib_Application.UnitOfWorkFactory UnitOfWork = 
         new fflib_Application.UnitOfWorkFactory(
             new List<SObjectType> {
-                Customer_Feedback__c.SObjectType
+                Customer_Feedback__c.SObjectType,
+                FeedbackResponse__c.SObjectType
             });
     
     // Configure and create the SelectorFactory for this Application
