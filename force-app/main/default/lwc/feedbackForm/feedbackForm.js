@@ -6,6 +6,7 @@ import { publish, MessageContext } from 'lightning/messageService';
 import FEEDBACK_CHANNEL from '@salesforce/messageChannel/FeedbackChannel__c';
 
 export default class FeedbackForm extends NavigationMixin(LightningElement) {
+    // use track to update the properties
     @track feedbackType = '';
     @track priority = '';
     @track email = '';

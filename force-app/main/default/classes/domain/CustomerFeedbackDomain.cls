@@ -4,7 +4,6 @@
 
 //OUR CONSTRUCTOR virtual so we can subclass it if needed.
 public virtual class CustomerFeedbackDomain extends fflib_SObjectDomain {
-    // fflibSObjectDomain is a base class for all domain classes
     
     //I inherits from fflib_SObjectDomain, so you get a Records 
     //property (a List<SObject>) and lifecycle hooks (onApplyDefaults(), onValidate(), etc.).
@@ -33,7 +32,6 @@ public virtual class CustomerFeedbackDomain extends fflib_SObjectDomain {
         }
     }
 
-    
     
     //  onApplyDefaults() is called after the records are inserted, but before they are validated.
     //  This is where we set default values for the records.

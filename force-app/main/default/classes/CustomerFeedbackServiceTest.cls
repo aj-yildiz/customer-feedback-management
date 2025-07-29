@@ -249,7 +249,7 @@ private class CustomerFeedbackServiceTest {
         Test.startTest();
         try {
             CustomerFeedbackService.escalateFeedback('a03000000000001');
-            System.assert(false, 'Should throw exception for non-existent feedback');
+            System.assert(false, 'Should throw exception for non-existent record');
         } catch (CustomerFeedbackService.CustomerFeedbackServiceException e) {
             System.assert(e.getMessage().contains('Feedback record not found'), 
                          'Should throw feedback not found exception');
@@ -394,6 +394,84 @@ private class CustomerFeedbackServiceTest {
             System.assertNotEquals(null, e, 'Exception should not be null');
         }
         
+        Test.stopTest();
+    }
+
+    @isTest
+    static void testUpdateFeedbackStatusNotFoundExceptionCoverage() {
+        // Test to specifically trigger line 34 in CustomerFeedbackService.updateFeedbackStatus()
+        Test.startTest();
+        
+        try {
+            // Use a non-existent ID to trigger the "feedback not found" path
+            Id nonExistentId = fflib_IDGenerator.generate(Customer_Feedback__c.SObjectType);
+            CustomerFeedbackService.updateFeedbackStatus(nonExistentId, 'In Progress');
+            System.assert(false, 'Should have thrown exception for non-existent feedback');
+        } catch (CustomerFeedbackService.CustomerFeedbackServiceException e) {
+            // This should hit line 34
+            System.assert(e.getMessage().contains('Feedback record not found'), 
+                         'Should throw feedback not found exception: ' + e.getMessage());
+        }
+        Test.stopTest();
+    }
+
+    @isTest
+    static void testEscalateFeedbackNotFoundExceptionCoverage() {
+        // Test to specifically trigger line 54 in CustomerFeedbackService.escalateFeedback()
+        Test.startTest();
+        
+        try {
+            // Use a non-existent ID to trigger the "feedback not found" path
+            Id nonExistentId = fflib_IDGenerator.generate(Customer_Feedback__c.SObjectType);
+            CustomerFeedbackService.escalateFeedback(nonExistentId);
+            System.assert(false, 'Should have thrown exception for non-existent feedback');
+        } catch (CustomerFeedbackService.CustomerFeedbackServiceException e) {
+            // This should hit line 54
+            System.assert(e.getMessage().contains('Feedback record not found'), 
+                         'Should throw feedback not found exception: ' + e.getMessage());
+        }
+        Test.stopTest();
+    }
+
+    @isTest
+    static void testUpdateFeedbackStatusNullRecordForced() {
+        // Force line 34 coverage in updateFeedbackStatus - feedback not found
+        Test.startTest();
+        
+        // Delete all feedback records to ensure none exist
+        delete [SELECT Id FROM Customer_Feedback__c];
+        
+        try {
+            // Use any valid ID format but record won't exist
+            Id testId = fflib_IDGenerator.generate(Customer_Feedback__c.SObjectType);
+            CustomerFeedbackService.updateFeedbackStatus(testId, 'In Progress');
+            System.assert(false, 'Should have thrown exception for non-existent feedback');
+        } catch (CustomerFeedbackService.CustomerFeedbackServiceException e) {
+            // This MUST hit line 34
+            System.assert(e.getMessage().contains('Feedback record not found'), 
+                         'Should throw feedback not found exception: ' + e.getMessage());
+        }
+        Test.stopTest();
+    }
+
+    @isTest
+    static void testEscalateFeedbackNullRecordForced() {
+        // Force line 54 coverage in escalateFeedback - feedback not found  
+        Test.startTest();
+        
+        // Delete all feedback records to ensure none exist
+        delete [SELECT Id FROM Customer_Feedback__c];
+        
+        try {
+            // Use any valid ID format but record won't exist
+            Id testId = fflib_IDGenerator.generate(Customer_Feedback__c.SObjectType);
+            CustomerFeedbackService.escalateFeedback(testId);
+            System.assert(false, 'Should have thrown exception for non-existent feedback');
+        } catch (CustomerFeedbackService.CustomerFeedbackServiceException e) {
+            // This MUST hit line 54
+            System.assert(e.getMessage().contains('Feedback record not found'), 
+                         'Should throw feedback not found exception: ' + e.getMessage());
+        }
         Test.stopTest();
     }
 } 

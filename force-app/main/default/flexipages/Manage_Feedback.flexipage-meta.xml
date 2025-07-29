@@ -7,12 +7,7 @@
                 <identifier>c_statusManager</identifier>
             </componentInstance>
         </itemInstances>
-        <itemInstances>
-            <componentInstance>
-                <componentName>escalationMonitor</componentName>
-                <identifier>c_escalationMonitor</identifier>
-            </componentInstance>
-        </itemInstances>
+
         <name>column1</name>
         <type>Region</type>
     </flexiPageRegions>

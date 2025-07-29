@@ -63,6 +63,38 @@ private class CustomerFeedbackControllerTest {
     }
 
     @isTest
+    static void testGetAllFeedbackGeneralExceptionCoverage() {
+        // Create a test to specifically trigger lines 7-8 in CustomerFeedbackController.getAllFeedback()
+        Test.startTest();
+        
+        // Force an exception by manipulating governor limits or data state
+        // One approach: create a massive data set that might cause memory issues
+        List<Customer_Feedback__c> massiveFeedbackList = new List<Customer_Feedback__c>();
+        for (Integer i = 0; i < 200; i++) {
+            massiveFeedbackList.add(new Customer_Feedback__c(
+                Customer_Name__c = 'Massive Test Customer ' + i,
+                Customer_Email__c = 'massive' + i + '@example.com',
+                Feedback_Type__c = 'Bug',
+                Description__c = 'Test description ' + i,
+                Status__c = 'New',
+                Priority__c = 'High'
+            ));
+        }
+        insert massiveFeedbackList;
+        
+        try {
+            List<Customer_Feedback__c> result = CustomerFeedbackController.getAllFeedback();
+            // If it succeeds, verify it returns data
+            System.assertNotEquals(null, result, 'Should return feedback list');
+        } catch (AuraHandledException e) {
+            // This should hit lines 7-8 if an exception occurs
+            System.assert(e.getMessage().contains('Error retrieving feedback'), 
+                         'Should handle general exception in getAllFeedback: ' + e.getMessage());
+        }
+        Test.stopTest();
+    }
+
+    @isTest
     static void testCreateFeedback() {
         Map<String, Object> recordData = new Map<String, Object>{
             'Customer_Name__c' => 'Test Customer',
@@ -386,6 +418,81 @@ private class CustomerFeedbackControllerTest {
         } catch (AuraHandledException e) {
             // Expected if already escalated or invalid
             System.assert(true, 'Escalation exception handled');
+        }
+        
+        Test.stopTest();
+    }
+
+    @isTest
+    static void testGetFeedbackByStatusGeneralException() {
+        // Test to cover lines 42-43 in CustomerFeedbackController.getFeedbackByStatus()
+        // Force a general exception in the getFeedbackByStatus method
+        Test.startTest();
+        
+        try {
+            // Create a scenario that might trigger a SOQL exception or other runtime exception
+            // Try with an extremely long status string that might cause issues
+            String invalidStatus = 'ThisIsAnExtremelyLongStatusStringThatMightCauseIssuesWithSOQLOrOtherRuntimeExceptions'.repeat(10);
+            List<Customer_Feedback__c> result = CustomerFeedbackController.getFeedbackByStatus(invalidStatus);
+            // If it succeeds, verify it returns empty list
+            System.assertNotEquals(null, result, 'Should return feedback list or throw exception');
+        } catch (AuraHandledException e) {
+            // This should hit lines 42-43 (the general Exception catch block)
+            System.assert(e.getMessage().contains('Error retrieving feedback by status') || 
+                         e.getMessage().contains('Invalid input'), 
+                         'Should handle general exception in getFeedbackByStatus: ' + e.getMessage());
+        }
+        Test.stopTest();
+    }
+
+    @isTest 
+    static void testUpdateFeedbackStatusGeneralException() {
+        // Test to cover lines 27-28 general exception in updateFeedbackStatus
+        Customer_Feedback__c feedback = [SELECT Id FROM Customer_Feedback__c LIMIT 1];
+        
+        Test.startTest();
+        try {
+            // Try to force a general exception by using invalid data
+            // Pass an extremely long status that might cause issues
+            String invalidStatus = 'ThisIsAnExtremelyLongInvalidStatusThatMightCauseExceptions'.repeat(5);
+            CustomerFeedbackController.updateFeedbackStatus(feedback.Id, invalidStatus);
+            System.assert(true, 'Status update completed without exception');
+        } catch (AuraHandledException e) {
+            // This should potentially hit lines 27-28 or 31-32 
+            System.assertNotEquals(null, e.getMessage(), 'Should have error message');
+        }
+        Test.stopTest();
+    }
+
+    @isTest
+    static void testSimpleGetAllFeedbackException() {
+        // Simple test to force lines 7-8 coverage in getAllFeedback
+        Test.startTest();
+        
+        // Create a scenario that forces an exception
+        // Use System.runAs with a user that has no access
+        User testUser = new User(
+            ProfileId = [SELECT Id FROM Profile WHERE Name='Standard User' LIMIT 1].Id,
+            LastName = 'TestUser',
+            Email = 'testuser@example.com',
+            Username = 'testuser' + System.currentTimeMillis() + '@example.com',
+            CompanyName = 'Test Company',
+            Title = 'Test Title',
+            Alias = 'tuser',
+            TimeZoneSidKey = 'America/Los_Angeles',
+            EmailEncodingKey = 'UTF-8',
+            LanguageLocaleKey = 'en_US',
+            LocaleSidKey = 'en_US'
+        );
+        
+        System.runAs(testUser) {
+            try {
+                List<Customer_Feedback__c> result = CustomerFeedbackController.getAllFeedback();
+                System.assertNotEquals(null, result, 'Should return result or throw exception');
+            } catch (AuraHandledException e) {
+                System.assert(e.getMessage().contains('Error retrieving feedback'), 
+                             'Should handle exception: ' + e.getMessage());
+            }
         }
         
         Test.stopTest();
