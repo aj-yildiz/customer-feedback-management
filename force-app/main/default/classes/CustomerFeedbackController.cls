@@ -1,5 +1,6 @@
 public with sharing class CustomerFeedbackController {
     
+    //
     @AuraEnabled(cacheable=true)
     public static List<Customer_Feedback__c> getAllFeedback() {
         try {
