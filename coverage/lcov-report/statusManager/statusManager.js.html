@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">52.94% </span>
+                <span class="strong">55.31% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>45/85</span>
+                <span class='fraction'>52/94</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">58.62% </span>
+                <span class="strong">66.66% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>17/29</span>
+                <span class='fraction'>26/39</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">62.96% </span>
+                <span class="strong">65.51% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>17/27</span>
+                <span class='fraction'>19/29</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">49.36% </span>
+                <span class="strong">52.32% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>39/79</span>
+                <span class='fraction'>45/86</span>
             </div>
         
             
@@ -296,7 +296,22 @@
 <a name='L231'></a><a href='#L231'>231</a>
 <a name='L232'></a><a href='#L232'>232</a>
 <a name='L233'></a><a href='#L233'>233</a>
-<a name='L234'></a><a href='#L234'>234</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L234'></a><a href='#L234'>234</a>
+<a name='L235'></a><a href='#L235'>235</a>
+<a name='L236'></a><a href='#L236'>236</a>
+<a name='L237'></a><a href='#L237'>237</a>
+<a name='L238'></a><a href='#L238'>238</a>
+<a name='L239'></a><a href='#L239'>239</a>
+<a name='L240'></a><a href='#L240'>240</a>
+<a name='L241'></a><a href='#L241'>241</a>
+<a name='L242'></a><a href='#L242'>242</a>
+<a name='L243'></a><a href='#L243'>243</a>
+<a name='L244'></a><a href='#L244'>244</a>
+<a name='L245'></a><a href='#L245'>245</a>
+<a name='L246'></a><a href='#L246'>246</a>
+<a name='L247'></a><a href='#L247'>247</a>
+<a name='L248'></a><a href='#L248'>248</a>
+<a name='L249'></a><a href='#L249'>249</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -338,10 +353,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">279x</span>
-<span class="cline-any cline-yes">27x</span>
+<span class="cline-any cline-yes">323x</span>
+<span class="cline-any cline-yes">31x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">252x</span>
+<span class="cline-any cline-yes">292x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -393,11 +408,26 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">96x</span>
+<span class="cline-any cline-yes">112x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -633,6 +663,21 @@ export default class StatusManager extends LightningElement {
 <span class="cstat-no" title="statement not covered" >        return this.hasSelectedFeedback &amp;&amp; this.replyText.trim().length &gt; 0;</span>
     }
 &nbsp;
+    get customerFullName() {
+        const feedback = this.currentFeedback;
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (!feedback) <span class="cstat-no" title="statement not covered" >return 'Unknown';</span>
+        
+        const firstName = feedback.Customer_Name__c || '';
+        const lastName = feedback.Customer_Last_Name__c || '';
+        
+        if (!firstName &amp;&amp; !lastName) return 'Unknown';
+<span class="cstat-no" title="statement not covered" >        return `${firstName} ${lastName}`.trim();</span>
+    }
+&nbsp;
+    get customerEmail() {
+        return this.currentFeedback?.Customer_Email__c || 'Not provided';
+    }
+&nbsp;
 <span class="fstat-no" title="function not covered" >    handleFeedbackSelection(</span>event) {
 <span class="cstat-no" title="statement not covered" >        this.selectedFeedbackId = event.detail.value;</span>
 <span class="cstat-no" title="statement not covered" >        this.replyText = ''; </span>// Clear reply when switching feedback
@@ -769,7 +814,7 @@ export default class StatusManager extends LightningElement {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-07-30T04:43:03.996Z
+                at 2025-07-30T16:50:08.568Z
             </div>
         <script src="../prettify.js"></script>
         <script>

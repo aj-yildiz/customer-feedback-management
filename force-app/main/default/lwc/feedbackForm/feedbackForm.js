@@ -7,6 +7,9 @@ import FEEDBACK_CHANNEL from '@salesforce/messageChannel/FeedbackChannel__c';
 
 export default class FeedbackForm extends NavigationMixin(LightningElement) {
     // use track to update the properties
+    @track customerName = '';
+    @track customerLastName = '';
+    @track customerEmail = '';
     @track feedbackType = '';
     @track priority = '';
     @track description = '';
@@ -20,6 +23,7 @@ export default class FeedbackForm extends NavigationMixin(LightningElement) {
         this.addFocusBlurListeners();
     }
 
+    // glow highlight cards when focused
     addFocusBlurListeners() {
         const comboboxes = this.template.querySelectorAll('lightning-combobox');
         const textareas = this.template.querySelectorAll('lightning-textarea');
@@ -30,6 +34,7 @@ export default class FeedbackForm extends NavigationMixin(LightningElement) {
         });
     }
 
+    // glow highlight cards when focused
     handleFocus(event) {
         const inputCard = event.target.closest('.input-card');
         if (inputCard) {
@@ -68,7 +73,13 @@ export default class FeedbackForm extends NavigationMixin(LightningElement) {
         const field = event.target.name;
         const value = event.target.value;
         
-        if (field === 'feedbackType') {
+        if (field === 'customerName') {
+            this.customerName = value;
+        } else if (field === 'customerLastName') {
+            this.customerLastName = value;
+        } else if (field === 'customerEmail') {
+            this.customerEmail = value;
+        } else if (field === 'feedbackType') {
             this.feedbackType = value;
         } else if (field === 'priority') {
             this.priority = value;
@@ -86,6 +97,9 @@ export default class FeedbackForm extends NavigationMixin(LightningElement) {
 
         try {
             const recordData = {
+                Customer_Name__c: this.customerName,
+                Customer_Last_Name__c: this.customerLastName,
+                Customer_Email__c: this.customerEmail,
                 Feedback_Type__c: this.feedbackType,
                 Priority__c: this.priority,
                 Description__c: this.description,
@@ -133,6 +147,9 @@ export default class FeedbackForm extends NavigationMixin(LightningElement) {
     }
 
     resetForm() {
+        this.customerName = '';
+        this.customerLastName = '';
+        this.customerEmail = '';
         this.feedbackType = '';
         this.priority = '';
         this.description = '';
@@ -144,6 +161,6 @@ export default class FeedbackForm extends NavigationMixin(LightningElement) {
             message,
             variant
         });
-        this.dispatchEvent(event);
+        this.dispatchEvent(event); // dispatch the event to the parent component
     }
 }

@@ -11,7 +11,7 @@
 public with sharing class CustomerFeedbackSelector extends fflib_SObjectSelector {
     
     public CustomerFeedbackSelector() { 
-        super(); 
+        super(); // calls the parent class's constructor
     }
     
     public CustomerFeedbackSelector(Boolean includeFieldSetFields, Boolean enforceCRUD, Boolean enforceFLS) {
@@ -26,6 +26,7 @@ public with sharing class CustomerFeedbackSelector extends fflib_SObjectSelector
             Customer_Feedback__c.CreatedDate,
             Customer_Feedback__c.LastModifiedDate,
             Customer_Feedback__c.Customer_Name__c,
+            Customer_Feedback__c.Customer_Last_Name__c,
             Customer_Feedback__c.Customer_Email__c,
             Customer_Feedback__c.Feedback_Type__c,
             Customer_Feedback__c.Description__c,
@@ -52,7 +53,7 @@ public with sharing class CustomerFeedbackSelector extends fflib_SObjectSelector
     // *** For bulkification ***
     public List<Customer_Feedback__c> selectAllWithOptionalCriteria() {
         return (List<Customer_Feedback__c>) Database.query(
-            newQueryFactory().toSOQL()
+            newQueryFactory().toSOQL() 
         );
     }
     
@@ -64,7 +65,7 @@ public with sharing class CustomerFeedbackSelector extends fflib_SObjectSelector
     //call from apex or lwc
     public Customer_Feedback__c selectById(Id feedbackId) {
         return [SELECT Id, Status__c, Priority__c, Feedback_Type__c,
-                       Customer_Name__c, Customer_Email__c, Description__c,
+                       Customer_Name__c, Customer_Last_Name__c, Customer_Email__c, Description__c,
                        Days_Since_Created__c, Escalation_Required__c
                 FROM Customer_Feedback__c
                 WHERE Id = :feedbackId 
@@ -78,7 +79,7 @@ public with sharing class CustomerFeedbackSelector extends fflib_SObjectSelector
     // The result is cast to a list of Customer_Feedback__c records.
     public List<Customer_Feedback__c> selectByStatus(String status) {
         return [SELECT Id, Name, CreatedDate, LastModifiedDate,
-                       Customer_Name__c, Customer_Email__c,
+                       Customer_Name__c, Customer_Last_Name__c, Customer_Email__c,
                        Feedback_Type__c, Description__c, Status__c, Priority__c,
                        Days_Since_Created__c, Escalation_Required__c
                 FROM Customer_Feedback__c
@@ -96,7 +97,7 @@ public with sharing class CustomerFeedbackSelector extends fflib_SObjectSelector
 
     public List<Customer_Feedback__c> selectByType(String feedbackType) {
         return [SELECT Id, Name, CreatedDate, LastModifiedDate,
-                       Customer_Name__c, Customer_Email__c,
+                       Customer_Name__c, Customer_Last_Name__c, Customer_Email__c,
                        Feedback_Type__c, Description__c, Status__c, Priority__c,
                        Days_Since_Created__c, Escalation_Required__c
                 FROM Customer_Feedback__c

@@ -48,6 +48,7 @@ export default class FeedbackInbox extends LightningElement {
         }
     }
 
+    // unsubscribe from the message channel -  Lightning Message Service c
     unsubscribeToMessageChannel() {
         if (this.subscription) {
             unsubscribe(this.subscription);
@@ -55,6 +56,7 @@ export default class FeedbackInbox extends LightningElement {
         }
     }
 
+    // handle messages from the message channel
     handleMessage(message) {
         if (message.type === 'replyAdded' && message.feedbackId === this.recordId) {
             refreshApex(this.wiredHistoryResult);
@@ -79,6 +81,8 @@ export default class FeedbackInbox extends LightningElement {
         });
     }
 
+    
+    //set up real-time updates and sync its state with the rest of the app 
     connectedCallback() {
         this.subscribeToMessageChannel();
         // Request current selection when component loads
@@ -87,10 +91,12 @@ export default class FeedbackInbox extends LightningElement {
         }, 100);
     }
 
+    // return true if there is a recordId
     get showInbox() {
         return this.recordId != null;
     }
 
+    // return true idf there is ticket history
     get hasHistory() {
         return this.historyEntries && this.historyEntries.length > 0;
     }

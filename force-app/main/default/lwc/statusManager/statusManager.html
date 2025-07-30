@@ -34,8 +34,28 @@
                 </div>
             </template>
 
-            <!-- Current Status Display -->
+            <!-- Customer Information -->
             <template if:true={hasSelectedFeedback}>
+                <div class="section customer-info-section">
+                    <div class="customer-info-card">
+                        <div class="customer-header">
+                            <lightning-icon icon-name="utility:contact" size="small" class="customer-icon"></lightning-icon>
+                            <h4 class="customer-title">Submitted By</h4>
+                        </div>
+                        <div class="customer-details">
+                            <div class="customer-detail">
+                                <span class="detail-label">Name:</span>
+                                <span class="detail-value">{customerFullName}</span>
+                            </div>
+                            <div class="customer-detail">
+                                <span class="detail-label">Email:</span>
+                                <span class="detail-value">{customerEmail}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Current Status Display -->
                 <div class="section">
                     <div class="status-display-card">
                         <div class="status-info">

@@ -382,4 +382,79 @@
         font-size: 1.125rem;
     }
 }
+
+/* Customer Information Section */
+.customer-info-section {
+    margin-bottom: 1rem;
+}
+
+.customer-info-card {
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+    border: 1px solid #bae6fd;
+    border-radius: 12px;
+    padding: 1rem;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
+}
+
+.customer-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #bae6fd;
+}
+
+.customer-icon {
+    color: #0369a1;
+}
+
+.customer-title {
+    color: #0369a1;
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.customer-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.customer-detail {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.25rem 0;
+}
+
+.detail-label {
+    font-size: 0.85rem;
+    color: #475569;
+    font-weight: 500;
+    min-width: 60px;
+}
+
+.detail-value {
+    font-size: 0.9rem;
+    color: #1e293b;
+    font-weight: 600;
+    text-align: right;
+    flex: 1;
+    margin-left: 1rem;
+}
+
+@media (max-width: 600px) {
+    .customer-detail {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+    }
+    
+    .detail-value {
+        text-align: left;
+        margin-left: 0;
+    }
+}
  

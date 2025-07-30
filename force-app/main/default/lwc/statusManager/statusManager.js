@@ -102,6 +102,21 @@ export default class StatusManager extends LightningElement {
         return this.hasSelectedFeedback && this.replyText.trim().length > 0;
     }
 
+    get customerFullName() {
+        const feedback = this.currentFeedback;
+        if (!feedback) return 'Unknown';
+        
+        const firstName = feedback.Customer_Name__c || '';
+        const lastName = feedback.Customer_Last_Name__c || '';
+        
+        if (!firstName && !lastName) return 'Unknown';
+        return `${firstName} ${lastName}`.trim();
+    }
+
+    get customerEmail() {
+        return this.currentFeedback?.Customer_Email__c || 'Not provided';
+    }
+
     handleFeedbackSelection(event) {
         this.selectedFeedbackId = event.detail.value;
         this.replyText = ''; // Clear reply when switching feedback

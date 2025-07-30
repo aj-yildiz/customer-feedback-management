@@ -11,6 +11,61 @@
         <!-- Form Section -->
         <div class="form-section">
             <div class="form-grid">
+                <!-- Customer Name Card -->
+                <div class="input-card">
+                    <div class="card-header">
+                        <div class="card-icon">👤</div>
+                        <h3 class="card-title">First Name</h3>
+                    </div>
+                    <div class="card-content">
+                        <lightning-input
+                            name="customerName"
+                            value={customerName}
+                            placeholder="Enter your first name"
+                            onchange={handleInputChange}
+                            variant="label-hidden"
+                            required>
+                        </lightning-input>
+                    </div>
+                </div>
+
+                <!-- Customer Last Name Card -->
+                <div class="input-card">
+                    <div class="card-header">
+                        <div class="card-icon">👥</div>
+                        <h3 class="card-title">Last Name</h3>
+                    </div>
+                    <div class="card-content">
+                        <lightning-input
+                            name="customerLastName"
+                            value={customerLastName}
+                            placeholder="Enter your last name"
+                            onchange={handleInputChange}
+                            variant="label-hidden"
+                            required>
+                        </lightning-input>
+                    </div>
+                </div>
+
+                <!-- Customer Email Card -->
+                <div class="input-card">
+                    <div class="card-header">
+                        <div class="card-icon">📧</div>
+                        <h3 class="card-title">Email Address</h3>
+                    </div>
+                    <div class="card-content">
+                        <lightning-input
+                            type="email"
+                            name="customerEmail"
+                            value={customerEmail}
+                            placeholder="Enter your email address"
+                            onchange={handleInputChange}
+                            variant="label-hidden"
+                            required>
+                        </lightning-input>
+                    </div>
+                </div>
+
                 <!-- Feedback Type Card -->
                 <div class="input-card">
                     <div class="card-header">

@@ -16,7 +16,7 @@ public class Application {
     public static final fflib_Application.SelectorFactory Selector = 
         new fflib_Application.SelectorFactory(
             new Map<SObjectType, Type> {
-                // returns the Selector for the Customer_Feedback__c object
+                // returs class of the object
                 Customer_Feedback__c.SObjectType => CustomerFeedbackSelector.class
             });
     
