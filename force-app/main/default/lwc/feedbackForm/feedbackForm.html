@@ -1,87 +1,97 @@
 <template>
-    <div class="feedback-form-wrapper">
-        <div class="feedback-form-card">
-            <!-- Form Header with emoji -->
-            <div class="form-header">
-                <h2>💬 Submit Feedback</h2>
-                <p>Thank you for being part of our community. Your feedback helps us improve and create better experiences for everyone.</p>
+    <div class="feedback-container">
+        <!-- Header Section -->
+        <div class="header-section">
+            <div class="header-content">
+                <h1 class="main-title">✨ Share Your Feedback</h1>
+                <p class="subtitle">Help us improve by sharing your thoughts and suggestions</p>
             </div>
-            
-            <form>
-                    <!-- Feedback Type -->
-                <div class="form-field">
+        </div>
+
+        <!-- Form Section -->
+        <div class="form-section">
+            <div class="form-grid">
+                <!-- Feedback Type Card -->
+                <div class="input-card">
+                    <div class="card-header">
+                        <div class="card-icon">📝</div>
+                        <h3 class="card-title">Feedback Type</h3>
+                    </div>
+                    <div class="card-content">
                         <lightning-combobox
                             name="feedbackType"
-                        label="📝 Feedback Type"
                             value={feedbackType}
-                        placeholder="Select feedback type"
-                        options={feedbackTypeOptions}
-                        onchange={handleInputChange}
-                        style="--slds-c-input-color-text: #000; --slds-c-input-color-background: #fff;"
-                        required>
-                    </lightning-combobox>
-                </div>
-
-                <!-- Priority -->
-                <div class="form-field">
-                    <lightning-combobox
-                        name="priority"
-                        label="⚡ Priority"
-                        value={priority}
-                        placeholder="Select priority"
-                        options={priorityOptions}
+                            placeholder="What type of feedback?"
+                            options={feedbackTypeOptions}
                             onchange={handleInputChange}
-                        style="--slds-c-input-color-text: #000; --slds-c-input-color-background: #fff;"
-                        required>
+                            variant="label-hidden"
+                            class="custom-combobox"
+                            required>
                         </lightning-combobox>
                     </div>
-
-                    <!-- Email -->
-                <div class="form-field">
-                    <lightning-input
-                        name="email"
-                        label="📧 Your Email"
-                        value={email}
-                        placeholder="Enter your email address"
-                        type="email"
-                        onchange={handleInputChange}
-                        class="email-field"
-                        style="--slds-c-input-color-text: #000; --slds-c-input-color-background: #fff;"
-                        required>
-                    </lightning-input>
                 </div>
-                    
-                    <!-- Description -->
-                <div class="form-field">
+
+                <!-- Priority Card -->
+                <div class="input-card">
+                    <div class="card-header">
+                        <div class="card-icon">⚡</div>
+                        <h3 class="card-title">Priority Level</h3>
+                    </div>
+                    <div class="card-content">
+                        <lightning-combobox
+                            name="priority"
+                            value={priority}
+                            placeholder="How urgent is this?"
+                            options={priorityOptions}
+                            onchange={handleInputChange}
+                            variant="label-hidden"
+                            class="custom-combobox"
+                            required>
+                        </lightning-combobox>
+                    </div>
+                </div>
+
+                <!-- Description Card -->
+                <div class="input-card description-card">
+                    <div class="card-header">
+                        <div class="card-icon">💭</div>
+                        <h3 class="card-title">Your Message</h3>
+                    </div>
+                    <div class="card-content">
                         <lightning-textarea
                             name="description"
-                        label="📄 Description"
                             value={description}
-                        placeholder="Please describe your feedback..."
+                            placeholder="Tell us more about your feedback..."
                             onchange={handleInputChange}
-                        max-length="1000"
-                        style="--slds-c-textarea-color-text: #000000; --slds-c-textarea-color-background: #ffffff; --slds-c-input-color-text: #000000; --slds-c-input-color-background: #ffffff; color: #000000; background-color: #ffffff; min-height: 120px;"
-                        required>
+                            max-length="1000"
+                            variant="label-hidden"
+                            class="custom-textarea"
+                            required>
                         </lightning-textarea>
+                        <div class="character-counter">
+                            {characterCount}/1000
+                        </div>
+                    </div>
                 </div>
-                
-                <!-- Submit Button -->
-                    <lightning-button
-                        variant="brand"
-                        label="Submit Feedback"
-                        onclick={handleSubmit}
-                    disabled={isSubmitting}
-                    class="submit-button">
-                    </lightning-button>
-
-                <!-- Loading Indicator -->
-                <template if:true={isSubmitting}>
-                    <div class="loading-indicator">
-                        <lightning-spinner alternative-text="Submitting..." size="small"></lightning-spinner>
-                        <p>Submitting your feedback...</p>
-                </div>
-                </template>
-            </form>
             </div>
+
+            <!-- Submit Section -->
+            <div class="submit-section">
+                <lightning-button
+                    variant="brand"
+                    label="Send Feedback"
+                    onclick={handleSubmit}
+                    disabled={isSubmitting}
+                    class="submit-btn">
+                </lightning-button>
+
+                <template if:true={isSubmitting}>
+                    <div class="loading-section">
+                        <lightning-spinner alternative-text="Sending..." size="medium"></lightning-spinner>
+                        <p class="loading-text">Sending your feedback...</p>
+                    </div>
+                </template>
+            </div>
+        </div>
     </div>
 </template>

@@ -1,293 +1,340 @@
-.feedback-form-wrapper {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 1rem;
-}
-
-.feedback-form-card {
+/* Main Container */
+.feedback-container {
+    min-height: 100vh;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
     padding: 2rem;
-    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
-.form-header {
+/* Header Section */
+.header-section {
     text-align: center;
-    margin-bottom: 2rem;
+    margin-bottom: 3rem;
+    animation: fadeInDown 0.8s ease-out;
 }
 
-.form-header h2 {
-    color: #ffffff;
-    font-size: 1.8rem;
+.header-content {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 2rem 3rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.main-title {
+    font-size: 3rem;
+    font-weight: 800;
+    color: white;
+    margin: 0 0 1rem 0;
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    letter-spacing: -0.02em;
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0;
+    font-weight: 400;
+}
+
+/* Form Section */
+.form-section {
+    width: 100%;
+    max-width: 900px;
+    animation: fadeInUp 0.8s ease-out 0.2s both;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+    position: relative;
+    z-index: 1;
+}
+
+/* Input Cards */
+.input-card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    padding: 0;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transition: all 0.3s ease;
+    overflow: visible;
+    position: relative;
+    z-index: 10;
+}
+
+.input-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+.description-card {
+    grid-column: 1 / -1;
+}
+
+.input-card.description-card {
+    z-index: 1;
+}
+
+.card-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.card-icon {
+    font-size: 2rem;
+    line-height: 1;
+}
+
+.card-title {
+    color: white;
+    font-size: 1.3rem;
     font-weight: 700;
-    margin-bottom: 0.5rem;
+    margin: 0;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.form-header p {
-    color: rgba(255, 255, 255, 0.9);
-    font-size: 1rem;
-    opacity: 0.9;
+.card-content {
+    padding: 2rem;
+    position: relative;
 }
 
-.form-field {
-    margin-bottom: 1.5rem;
+/* Lightning Component Overrides */
+.custom-combobox,
+.custom-textarea {
+    --slds-c-input-color-background: #ffffff;
+    --slds-c-input-color-text: #333333;
+    --slds-c-input-radius-border: 12px;
+    --slds-c-input-color-border: #e0e0e0;
+    --slds-c-input-color-border-focus: #667eea;
+    --slds-c-input-shadow-focus: 0 0 0 3px rgba(102, 126, 234, 0.2);
 }
 
-/* Override Lightning component styles */
-.form-field lightning-input,
-.form-field lightning-combobox,
-.form-field lightning-textarea {
-    --slds-c-input-color-background: rgba(255, 255, 255, 0.95);
-    --slds-c-input-color-border: rgba(255, 255, 255, 0.3);
-    --slds-c-input-color-border-focus: #ffffff;
-    --slds-c-input-radius-border: 8px;
-    --slds-c-input-spacing-block-start: 0.75rem;
-    --slds-c-input-spacing-block-end: 0.75rem;
-    --slds-c-input-spacing-inline-start: 1rem;
-    --slds-c-input-spacing-inline-end: 1rem;
-}
-
-.form-field label {
-    color: #ffffff !important;
-    font-weight: 600;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-}
-
-/* Input field styling */
-.form-field .slds-form-element__control input,
-.form-field .slds-form-element__control textarea,
-.form-field .slds-form-element__control .slds-combobox__input {
-    background: rgba(255, 255, 255, 0.95) !important;
-    border: 2px solid rgba(255, 255, 255, 0.3) !important;
-    border-radius: 8px !important;
-    font-weight: 700;
-}
-
-/* Email field specific styling */
-:host .form-field .email-field::part(input) {
-    color: #222 !important;
-}
-
-.form-field .slds-form-element__control input:focus,
-.form-field .slds-form-element__control textarea:focus,
-.form-field .slds-form-element__control .slds-combobox__input:focus {
-    border-color: #ffffff !important;
-    box-shadow: 0 0 0 2px rgba(248, 248, 248, 0.3) !important;
+.custom-combobox .slds-combobox__input,
+.custom-textarea .slds-textarea {
+    border: 2px solid #e0e0e0 !important;
+    border-radius: 12px !important;
+    padding: 1rem 1.5rem !important;
+    font-size: 1rem !important;
+    font-weight: 500 !important;
+    transition: all 0.3s ease !important;
     background: #ffffff !important;
+    color: #333333 !important;
 }
 
-/* Submit button styling */
-.submit-button {
-    width: 100%;
+.custom-combobox .slds-combobox__input:focus,
+.custom-textarea .slds-textarea:focus {
+    border-color: #667eea !important;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2) !important;
+}
+
+.custom-textarea .slds-textarea {
+    min-height: 120px !important;
+    resize: vertical !important;
+}
+
+/* Character Counter */
+.character-counter {
+    position: absolute;
+    bottom: 1rem;
+    right: 1.5rem;
+    font-size: 0.85rem;
+    color: #888;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 0.25rem 0.5rem;
+    border-radius: 6px;
+    backdrop-filter: blur(10px);
+}
+
+/* Submit Section */
+.submit-section {
+    text-align: center;
+    animation: fadeInUp 0.8s ease-out 0.4s both;
+}
+
+.submit-btn {
     background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%) !important;
     border: none !important;
     color: white !important;
-    padding: 1rem 2rem !important;
-    border-radius: 25px !important;
-    font-size: 1.1rem !important;
+    padding: 1.25rem 3rem !important;
+    border-radius: 50px !important;
+    font-size: 1.2rem !important;
     font-weight: 700 !important;
     text-transform: uppercase !important;
     letter-spacing: 1px !important;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    margin-top: 1rem;
-    box-shadow: 0 8px 20px rgba(79, 172, 254, 0.4);
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 8px 25px rgba(79, 172, 254, 0.4) !important;
+    min-width: 200px;
 }
 
-.submit-button:hover {
+.submit-btn:hover:not(:disabled) {
     background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%) !important;
-    transform: translateY(-2px);
-    box-shadow: 0 12px 25px rgba(79, 172, 254, 0.5) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 12px 35px rgba(79, 172, 254, 0.6) !important;
 }
 
-.submit-button:disabled {
+.submit-btn:disabled {
     background: rgba(255, 255, 255, 0.3) !important;
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none !important;
+    cursor: not-allowed !important;
+    transform: none !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
 }
 
-.loading-indicator {
-    text-align: center;
-    margin-top: 1rem;
-    color: rgba(255, 255, 255, 0.9);
+/* Loading Section */
+.loading-section {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
 }
 
-.loading-indicator p {
-    margin-top: 0.5rem;
+.loading-text {
+    color: white;
+    font-size: 1.1rem;
     font-weight: 500;
+    margin: 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-/* Remove validation error styling that shows red borders */
-.form-field .slds-has-error .slds-form-element__control input,
-.form-field .slds-has-error .slds-form-element__control textarea,
-.form-field .slds-has-error .slds-form-element__control .slds-combobox__input {
-    border-color: rgba(255, 255, 255, 0.5) !important;
-    box-shadow: none !important;
-}
-
-/* Hide error messages */
-.form-field .slds-form-element__help {
-    display: none !important;
-}
-
-/* Ensure all input, textarea, and select fields have visible text color and background */
-input,
-textarea,
-select {
-    color: #222 !important;
-    background: #fff !important;
-}
-
-/* Optionally, style placeholder text for visibility */
-input::placeholder,
-textarea::placeholder {
-    color: #888 !important;
-    opacity: 1;
+/* Animations */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
     }
-    
-/* force-app/main/default/lwc/feedbackForm/feedbackForm.css */
-/* ------------------------------------------------------ */
-/* Target Lightning Base Components (lightning-combobox, lightning-textarea) */
-/* Use CSS custom properties that Lightning components inherit */
-:host {
-  --slds-c-input-text-color: #222;
-  --slds-c-combobox-text-color: #222;
-  --slds-c-textarea-text-color: #222;
-  --slds-c-input-color-background: #ffffff;
-  --slds-c-textarea-color-background: #ffffff;
-  --slds-c-combobox-color-background: #ffffff;
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
-    
-/* Also target any standard inputs if they exist */
-:host input,
-:host textarea,
-:host select {
-  background-color: #ffffff !important;
-  color: #000000 !important;
-    }
-    
-/* Target lightning base components specifically */
-:host lightning-combobox,
-:host lightning-textarea {
-  --slds-c-combobox-text-color: #222;
-  --slds-c-textarea-text-color: #222;
-  --slds-c-input-color-background: #ffffff;
-    }
-    
-/* Additional specific targeting for textarea visibility */
-:host lightning-textarea textarea,
-:host lightning-textarea ::slotted(textarea),
-:host textarea {
-  color: #000000 !important;
-  background-color: #ffffff !important;
-  caret-color: #000000 !important;
 }
 
-/* Lightning textarea specific CSS variables */
-:host lightning-textarea {
-  --slds-c-textarea-text-color: #222;
-  --slds-c-textarea-color-background: #ffffff;
-  --slds-c-input-text-color: #222;
-  --slds-c-input-color-background: #ffffff;
-  --lwc-colorTextInput: #222;
-  --lwc-colorBackgroundInput: #ffffff;
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
     }
-    
-/* FORCE BLACK TEXT IN TEXTAREA - HIGHEST SPECIFICITY */
-:host lightning-textarea textarea {
-  color: #000000 !important;
-  background-color: #ffffff !important;
-  caret-color: #000000 !important;
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
-    
-/* Target the actual textarea element inside lightning-textarea */
-:host lightning-textarea .slds-textarea {
-  color: #000000 !important;
-  background-color: #ffffff !important;
-    }
-    
-/* Additional fallback selectors */
-:host .slds-textarea {
-  color: #000000 !important;
-  background-color: #ffffff !important;
-    }
-    
-:host textarea {
-  color: #000000 !important;
-  background-color: #ffffff !important;
-    }
-    
-/* Override any form field styles for textarea */
-:host .form-field textarea,
-:host .form-field .slds-textarea {
-  color: #000000 !important;
-  background-color: #ffffff !important;
 }
 
-/* Make field labels bold, white, and larger */
-:host lightning-combobox label,
-:host lightning-textarea label,
-:host .slds-form-element__label {
-  color: #ffffff !important;
-  font-weight: bold !important;
-  font-size: 16px !important;
+/* Dropdown Styling */
+.custom-combobox .slds-dropdown {
+    border-radius: 12px !important;
+    border: 2px solid #e0e0e0 !important;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1) !important;
+    margin-top: 4px !important;
 }
 
-/* Target lightning base component labels specifically */
-:host lightning-combobox::part(label),
-:host lightning-textarea::part(label) {
-  color: #ffffff !important;
-  font-weight: bold !important;
-  font-size: 16px !important;
+.custom-combobox .slds-listbox__option {
+    padding: 0.75rem 1rem !important;
+    font-weight: 500 !important;
 }
 
-/* Fallback for any label element */
-:host label {
-  color: #ffffff !important;
-  font-weight: bold !important;
-  font-size: 16px !important;
+.custom-combobox .slds-listbox__option:hover {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    color: white !important;
 }
 
-/* Target the specific SLDS label class with maximum specificity */
-:host .slds-form-element__label {
-  color: #ffffff !important;
-  font-weight: bold !important;
-  font-size: 18px !important;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.5) !important;
-}
-
-/* Additional targeting for label elements */
-:host lightning-combobox .slds-form-element__label,
-:host lightning-textarea .slds-form-element__label {
-  color: #ffffff !important;
-  font-weight: bold !important;
-  font-size: 18px !important;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.5) !important;
-}
-
-/* Override any SLDS default styling */
-:host label.slds-form-element__label {
-  color: #ffffff !important;
-  font-weight: bold !important;
-  font-size: 18px !important;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.5) !important;
-}
-
+/* Responsive Design */
 @media (max-width: 768px) {
-    .feedback-form-card {
+    .feedback-container {
+        padding: 1rem;
+        min-height: auto;
+    }
+
+    .header-content {
+        padding: 1.5rem 2rem;
+    }
+
+    .main-title {
+        font-size: 2.2rem;
+    }
+
+    .subtitle {
+        font-size: 1rem;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .card-header {
+        padding: 1.25rem;
+    }
+
+    .card-content {
         padding: 1.5rem;
-        margin: 0.5rem;
+    }
+
+    .card-title {
+        font-size: 1.1rem;
+    }
+
+    .submit-btn {
+        padding: 1rem 2rem !important;
+        font-size: 1rem !important;
+        min-width: 160px;
+    }
 }
 
-    .form-header h2 {
+@media (max-width: 480px) {
+    .main-title {
+        font-size: 1.8rem;
+    }
+
+    .header-content {
+        padding: 1rem 1.5rem;
+    }
+
+    .card-icon {
         font-size: 1.5rem;
     }
-    
-    .submit-button {
-        font-size: 1rem !important;
-        padding: 0.875rem 1.5rem !important;
+
+    .card-title {
+        font-size: 1rem;
     }
+
+    .submit-btn {
+        width: 100%;
+        max-width: 280px;
+    }
+}
+
+/* Lightning Component Text Color Fix */
+:host {
+    --slds-c-input-text-color: #333333;
+    --slds-c-combobox-text-color: #333333;
+    --slds-c-textarea-text-color: #333333;
+    --slds-c-input-color-background: #ffffff;
+    --slds-c-textarea-color-background: #ffffff;
+    --slds-c-combobox-color-background: #ffffff;
+    --lwc-combobox-listbox-z-index: 1002;
+}
+
+:host lightning-combobox,
+:host lightning-textarea {
+    --slds-c-combobox-text-color: #333333;
+    --slds-c-textarea-text-color: #333333;
+    --slds-c-input-color-background: #ffffff;
+}
+
+:host lightning-combobox input,
+:host lightning-textarea textarea {
+    color: #333333 !important;
+    background-color: #ffffff !important;
 }

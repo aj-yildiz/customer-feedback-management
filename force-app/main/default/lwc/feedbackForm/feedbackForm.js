@@ -9,7 +9,6 @@ export default class FeedbackForm extends NavigationMixin(LightningElement) {
     // use track to update the properties
     @track feedbackType = '';
     @track priority = '';
-    @track email = '';
     @track description = '';
     @track isSubmitting = false;
     
@@ -18,18 +17,22 @@ export default class FeedbackForm extends NavigationMixin(LightningElement) {
 
     get feedbackTypeOptions() {
         return [
-            { label: 'Bug', value: 'Bug' },
-            { label: 'Feature Request', value: 'Feature Request' },
-            { label: 'General Inquiry', value: 'General Inquiry' }
+            { label: '🐛 Bug Report', value: 'Bug' },
+            { label: '💡 Feature Request', value: 'Feature Request' },
+            { label: '❓ General Inquiry', value: 'General Inquiry' }
         ];
     }
 
     get priorityOptions() {
         return [
-            { label: 'Low', value: 'Low' },
-            { label: 'Medium', value: 'Medium' },
-            { label: 'High', value: 'High' }
+            { label: '🟢 Low Priority', value: 'Low' },
+            { label: '🟡 Medium Priority', value: 'Medium' },
+            { label: '🔴 High Priority', value: 'High' }
         ];
+    }
+
+    get characterCount() {
+        return this.description ? this.description.length : 0;
     }
 
     handleInputChange(event) {
@@ -40,8 +43,6 @@ export default class FeedbackForm extends NavigationMixin(LightningElement) {
             this.feedbackType = value;
         } else if (field === 'priority') {
             this.priority = value;
-        } else if (field === 'email') {
-            this.email = value;
         } else if (field === 'description') {
             this.description = value;
         }
@@ -58,14 +59,13 @@ export default class FeedbackForm extends NavigationMixin(LightningElement) {
             const recordData = {
                 Feedback_Type__c: this.feedbackType,
                 Priority__c: this.priority,
-                Customer_Email__c: this.email,
                 Description__c: this.description,
                 Status__c: 'New'
             };
 
             const result = await createFeedback({ recordData });
 
-            this.showToast('Success', 'Feedback submitted successfully!', 'success');
+            this.showToast('Success', 'Your feedback has been submitted successfully! 🎉', 'success');
             this.resetForm();
             
             // Notify other components that feedback was created
@@ -97,7 +97,7 @@ export default class FeedbackForm extends NavigationMixin(LightningElement) {
         }, true);
 
         if (!allValid) {
-            this.showToast('Error', 'Please complete all required fields', 'error');
+            this.showToast('Error', 'Please complete all required fields ⚠️', 'error');
         }
 
         return allValid;
@@ -106,7 +106,6 @@ export default class FeedbackForm extends NavigationMixin(LightningElement) {
     resetForm() {
         this.feedbackType = '';
         this.priority = '';
-        this.email = '';
         this.description = '';
     }
 
