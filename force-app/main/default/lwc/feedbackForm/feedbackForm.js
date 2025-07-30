@@ -15,6 +15,35 @@ export default class FeedbackForm extends NavigationMixin(LightningElement) {
     @wire(MessageContext)
     messageContext;
 
+    renderedCallback() {
+        // Add event listeners for focus and blur to manage z-index
+        this.addFocusBlurListeners();
+    }
+
+    addFocusBlurListeners() {
+        const comboboxes = this.template.querySelectorAll('lightning-combobox');
+        const textareas = this.template.querySelectorAll('lightning-textarea');
+        
+        [...comboboxes, ...textareas].forEach(element => {
+            element.addEventListener('focus', this.handleFocus.bind(this));
+            element.addEventListener('blur', this.handleBlur.bind(this));
+        });
+    }
+
+    handleFocus(event) {
+        const inputCard = event.target.closest('.input-card');
+        if (inputCard) {
+            inputCard.classList.add('active-card');
+        }
+    }
+
+    handleBlur(event) {
+        const inputCard = event.target.closest('.input-card');
+        if (inputCard) {
+            inputCard.classList.remove('active-card');
+        }
+    }
+
     get feedbackTypeOptions() {
         return [
             { label: '🐛 Bug Report', value: 'Bug' },
