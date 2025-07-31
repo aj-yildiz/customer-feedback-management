@@ -1,221 +1,164 @@
 <template>
-    <template if:true={canViewAdminDashboard}>
-        <div class="feedback-list-wrapper">
-            <article class="slds-card feedback-list-card">
-                <div class="slds-card__header slds-grid">
-                    <header class="slds-media slds-media_center slds-has-flexi-truncate">
-                        <div class="slds-media__figure">
-                            <lightning-icon icon-name="utility:list" size="small" class="slds-m-right_small"></lightning-icon>
-                        </div>
-                        <div class="slds-media__body">
-                            <h2 class="slds-card__header-title slds-text-heading_medium">Customer Feedback</h2>
-                        </div>
-                    </header>
-                </div>
-            
-                <div class="slds-card__body slds-card__body_inner">
-                    <!-- Loading Indicator -->
-                    <template if:true={isLoading}>
-                        <div class="slds-text-align_center slds-m-bottom_medium">
-                            <lightning-spinner alternative-text="Loading feedback..." size="small"></lightning-spinner>
-                            <p class="slds-text-body_small slds-m-top_x-small">Loading feedback data...</p>
-                        </div>
-                    </template>
-
-                    <!-- Filter Section -->
-                    <div class="filter-section slds-grid slds-gutters slds-m-bottom_medium">
-                        <div class="slds-col slds-size_1-of-2">
-                            <div class="slds-form-element">
-                                <label class="slds-form-element__label" for="status-filter">Filter by Status</label>
-                                <div class="slds-form-element__control">
-                                    <lightning-combobox
-                                        name="statusFilter"
-                                        label="Filter by Status"
-                                        value={selectedStatus}
-                                        options={statusOptions}
-                                        onchange={handleStatusChange}
-                                        disabled={isFilteringDisabled}
-                                        variant="label-hidden">
-                                    </lightning-combobox>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="slds-col slds-size_1-of-2">
-                            <div class="slds-form-element">
-                                <label class="slds-form-element__label" for="type-filter">Filter by Type</label>
-                                <div class="slds-form-element__control">
-                                    <lightning-combobox
-                                        name="typeFilter"
-                                        label="Filter by Type"
-                                        value={selectedType}
-                                        options={typeOptions}
-                                        onchange={handleTypeChange}
-                                        disabled={isFilteringDisabled}
-                                        variant="label-hidden">
-                                    </lightning-combobox>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Feedback Table -->
-                    <div class="feedback-table-container">
-                        <div class="slds-scrollable_x">
-                            <table class="slds-table slds-table_cell-buffer slds-table_bordered">
-                                <thead>
-                                    <tr class="slds-line-height_reset">
-                                        <th class="slds-text-title_caps" scope="col">
-                                            <div class="slds-truncate" title="Feedback ID">Feedback ID</div>
-                                        </th>
-                                        <th class="slds-text-title_caps" scope="col">
-                                            <div class="slds-truncate" title="Type">
-                                                <lightning-icon icon-name="utility:type" size="xx-small" class="slds-m-right_xx-small"></lightning-icon>
-                                                Type
-                                            </div>
-                                        </th>
-                                        <th class="slds-text-title_caps" scope="col">
-                                            <div class="slds-truncate" title="Customer Name">
-                                                <lightning-icon icon-name="utility:user" size="xx-small" class="slds-m-right_xx-small"></lightning-icon>
-                                                Customer Name
-                                            </div>
-                                        </th>
-                                        <th class="slds-text-title_caps" scope="col">
-                                            <div class="slds-truncate" title="Customer Email">
-                                                <lightning-icon icon-name="utility:email" size="xx-small" class="slds-m-right_xx-small"></lightning-icon>
-                                                Customer Email
-                                            </div>
-                                        </th>
-                                        <th class="slds-text-title_caps" scope="col">
-                                            <div class="slds-truncate" title="Description">
-                                                <lightning-icon icon-name="utility:description" size="xx-small" class="slds-m-right_xx-small"></lightning-icon>
-                                                Description
-                                            </div>
-                                        </th>
-                                        <th class="slds-text-title_caps" scope="col">
-                                            <div class="slds-truncate" title="Status">
-                                                <lightning-icon icon-name="utility:status" size="xx-small" class="slds-m-right_xx-small"></lightning-icon>
-                                                Status
-                                            </div>
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <template if:true={hasData}>
-                                        <template for:each={filteredFeedbacks} for:item="fb">
-                                            <tr key={fb.Id} class="feedback-row">
-                                                <td class="slds-text-body_regular">
-                                                    <div class="slds-truncate" title={fb.Name}>{fb.Name}</div>
-                                                </td>
-                                                <td class="slds-text-body_regular">
-                                                    <div class="slds-media slds-media_center">
-                                                        <div class="slds-media__figure">
-                                                            <lightning-icon 
-                                                                icon-name={fb.typeIcon} 
-                                                                size="x-small" 
-                                                                class="slds-m-right_x-small">
-                                                            </lightning-icon>
-                                                        </div>
-                                                        <div class="slds-media__body">
-                                                            <span class="slds-truncate" title={fb.typeText}>{fb.typeText}</span>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td class="slds-text-body_regular">
-                                                    <div class="slds-truncate" title={fb.ece__Customer_Name__c}>
-                                                        {fb.ece__Customer_Name__c}
-                                                    </div>
-                                                </td>
-                                                <td class="slds-text-body_regular">
-                                                    <div class="slds-truncate" title={fb.ece__Customer_Email__c}>
-                                                        {fb.ece__Customer_Email__c}
-                                                    </div>
-                                                </td>
-                                                <td class="slds-text-body_regular">
-                                                    <div class="description-cell">
-                                                        <template if:true={fb.ece__Description__c}>
-                                                            <div class="slds-truncate" title={fb.ece__Description__c}>
-                                                                {fb.displayDescription}
-                                                            </div>
-                                                        </template>
-                                                        <template if:false={fb.ece__Description__c}>
-                                                            <span class="slds-text-color_weak slds-text-body_small">
-                                                                {fb.displayDescription}
-                                                            </span>
-                                                        </template>
-                                                    </div>
-                                                </td>
-                                                <td class="slds-text-body_regular">
-                                                    <lightning-badge 
-                                                        label={fb.statusLabel} 
-                                                        class={fb.statusBadgeClass}>
-                                                    </lightning-badge>
-                                                </td>
-                                            </tr>
-                                        </template>
-                                    </template>
-                                    
-                                    <!-- No Data Message -->
-                                    <template if:false={hasData}>
-                                        <tr>
-                                            <td colspan="6" class="slds-text-align_center slds-p-around_medium">
-                                                <template if:false={isLoading}>
-                                                    <div class="slds-text-body_regular slds-text-color_weak">
-                                                        <lightning-icon icon-name="utility:info" size="small" class="slds-m-bottom_x-small"></lightning-icon>
-                                                        <div>No feedback records found.</div>
-                                                        <div class="slds-text-body_small slds-m-top_x-small">
-                                                            Create your first feedback record using the form above.
-                                                        </div>
-                                                    </div>
-                                                </template>
-                                            </td>
-                                        </tr>
-                                    </template>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    
-                    <!-- Actions Section -->
-                    <div class="slds-m-top_medium slds-grid slds-grid_align-spread">
-                        <div class="slds-col">
-                            <div class="slds-text-body_small slds-text-color_weak">
-                                <template if:true={hasData}>
-                                    Showing {filteredFeedbacks.length} of {feedbacks.length} records
-                                </template>
-                                <template if:false={hasData}>
-                                    <template if:false={isLoading}>
-                                        0 records found
-                                    </template>
-                                </template>
-                            </div>
-                        </div>
-                        <div class="slds-col slds-no-flex">
-                            <lightning-button 
-                                variant="neutral" 
-                                label="Refresh Data" 
-                                onclick={handleRefresh}
-                                disabled={isLoading}
-                                icon-name="utility:refresh"
-                                class="refresh-button">
-                            </lightning-button>
-                        </div>
-                    </div>
-                </div>
-            </article>
+    <div class="feedback-list-container">
+        <!-- Header -->
+        <div class="feedback-header">
+            <h1>🎯 Customer Feedback</h1>
         </div>
-    </template>
-    
-    <template if:false={canViewAdminDashboard}>
-        <div class="slds-card">
-            <div class="slds-card__body slds-card__body_inner">
-                <div class="slds-text-align_center slds-p-around_large">
-                    <lightning-icon icon-name="utility:lock" size="large" class="slds-m-bottom_small"></lightning-icon>
-                    <h3 class="slds-text-heading_medium slds-m-bottom_small">Access Restricted</h3>
-                    <p class="slds-text-body_regular slds-text-color_weak">
-                        You need administrator privileges to view the feedback dashboard.
-                    </p>
-                </div>
+
+        <!-- Filter Section -->
+        <div class="filter-section">
+            <div class="filter-group">
+                <label class="filter-label">Filter by Status</label>
+                <lightning-combobox
+                    name="statusFilter"
+                    value={statusFilter}
+                    placeholder="All Statuses"
+                    options={statusOptions}
+                    onchange={handleStatusFilterChange}>
+                </lightning-combobox>
+            </div>
+            <div class="filter-group">
+                <label class="filter-label">Filter by Type</label>
+                <lightning-combobox
+                    name="typeFilter"
+                    value={typeFilter}
+                    placeholder="All Types"
+                    options={typeOptions}
+                    onchange={handleTypeFilterChange}>
+                </lightning-combobox>
             </div>
         </div>
-    </template>
+
+        <!-- Table Container -->
+        <div class="table-container">
+            <!-- Table Header -->
+            <div class="table-header">
+                <div class="table-header-cell">
+                    <lightning-icon icon-name="utility:number_input" size="x-small"></lightning-icon>
+                    Feedback ID
+                </div>
+                <div class="table-header-cell">
+                    <lightning-icon icon-name="utility:apps" size="x-small"></lightning-icon>
+                    Type
+                </div>
+                <div class="table-header-cell">
+                    <lightning-icon icon-name="utility:priority" size="x-small"></lightning-icon>
+                    Priority
+                </div>
+                <div class="table-header-cell">
+                    <lightning-icon icon-name="utility:description" size="x-small"></lightning-icon>
+                    Description
+                </div>
+                <div class="table-header-cell">
+                    <lightning-icon icon-name="utility:clock" size="x-small"></lightning-icon>
+                    Days Old
+                </div>
+                <div class="table-header-cell">
+                    <lightning-icon icon-name="utility:warning" size="x-small"></lightning-icon>
+                    Escalation
+                </div>
+                <div class="table-header-cell">
+                    <lightning-icon icon-name="utility:info" size="x-small"></lightning-icon>
+                    Status
+                </div>
+            </div>
+
+            <!-- Table Rows -->
+            <template if:true={hasFeedback}>
+                <template for:each={filteredFeedback} for:item="feedback">
+                    <div key={feedback.Id} class="feedback-row">
+                        <!-- Feedback ID -->
+                        <div class="feedback-id">
+                            {feedback.Name}
+                        </div>
+                        
+                        <!-- Type with Icon -->
+                        <div class="feedback-type-cell">
+                            <template if:true={feedback.typeIcon}>
+                                <span class="type-icon">{feedback.typeIcon}</span>
+                            </template>
+                            <template if:false={feedback.typeIcon}>
+                                <span class="type-icon">❓</span>
+                            </template>
+                            <span class="feedback-type">{feedback.Feedback_Type__c}</span>
+                        </div>
+                        
+                        <!-- Priority -->
+                        <div class="priority-cell">
+                            <span class={feedback.priorityClass}>
+                                {feedback.Priority__c}
+                            </span>
+                        </div>
+                        
+                        <!-- Description -->
+                        <div class={feedback.descriptionClass}>
+                            {feedback.displayDescription}
+                        </div>
+                        
+                        <!-- Days Since Created -->
+                        <div class="feedback-days">
+                            <span class="days-badge">
+                                {feedback.Days_Since_Created__c} days
+                            </span>
+                        </div>
+                        
+                        <!-- Escalation Required -->
+                        <div class="feedback-escalation">
+                            <template if:true={feedback.Escalation_Required__c}>
+                                <span class="escalation-required">⚠️ Required</span>
+                            </template>
+                            <template if:false={feedback.Escalation_Required__c}>
+                                <span class="escalation-not-required">✅ Normal</span>
+                            </template>
+                        </div>
+                        
+                        <!-- Status -->
+                        <div class="status-cell">
+                            <span class={feedback.statusClass}>
+                                {feedback.Status__c}
+                            </span>
+                        </div>
+                    </div>
+                </template>
+            </template>
+
+            <!-- No Data State -->
+            <template if:false={hasFeedback}>
+                <template if:false={isLoading}>
+                    <div class="feedback-row">
+                        <div style="grid-column: 1 / -1; text-align: center; color: #6b7280; font-style: italic;">
+                            No feedback records found. Submit some feedback to get started!
+                        </div>
+                    </div>
+                </template>
+            </template>
+
+            <!-- Loading State -->
+            <template if:true={isLoading}>
+                <div class="loading-container">
+                    <lightning-spinner alternative-text="Loading feedback..." size="medium"></lightning-spinner>
+                    <p>Loading feedback data...</p>
+                </div>
+            </template>
+
+            <!-- Error State -->
+            <template if:true={error}>
+                <div class="error-container">
+                    <lightning-icon icon-name="utility:error" size="small"></lightning-icon>
+                    <p>Error loading feedback: {error}</p>
+                </div>
+            </template>
+        </div>
+
+        <!-- Footer -->
+        <div class="table-footer">
+            <span>Showing {recordCount} of {recordCount} records</span>
+            <lightning-button
+                variant="brand"
+                label="🔄 Refresh Data"
+                onclick={refreshData}
+                class="refresh-button">
+            </lightning-button>
+        </div>
+    </div>
 </template>

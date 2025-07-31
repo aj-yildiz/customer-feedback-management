@@ -1,176 +1,166 @@
-import { LightningElement, track, api, wire } from 'lwc';
+import { LightningElement, track, wire } from 'lwc';
 import createFeedback from '@salesforce/apex/CustomerFeedbackController.createFeedback';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+import { NavigationMixin } from 'lightning/navigation';
 import { publish, MessageContext } from 'lightning/messageService';
 import FEEDBACK_CHANNEL from '@salesforce/messageChannel/FeedbackChannel__c';
-import { getRecord } from 'lightning/uiRecordApi';
-import USER_ID from '@salesforce/user/Id';
-import NAME_FIELD from '@salesforce/schema/User.Name';
-import EMAIL_FIELD from '@salesforce/schema/User.Email';
 
-export default class FeedbackForm extends LightningElement {
-    @track feedbackType = 'General Inquiry';
+export default class FeedbackForm extends NavigationMixin(LightningElement) {
+    // use track to update the properties
+    @track customerName = '';
+    @track customerLastName = '';
+    @track customerEmail = '';
+    @track feedbackType = '';
+    @track priority = '';
     @track description = '';
-    @track status = 'New';
-    @track isLoading = false;
-    @api feedbackCreatedCallback;
-
+    @track isSubmitting = false;
+    
     @wire(MessageContext)
     messageContext;
 
-    @wire(getRecord, { recordId: USER_ID, fields: [NAME_FIELD, EMAIL_FIELD] })
-    user;
-
-    connectedCallback() {
-        // Component initialization if needed
+    renderedCallback() {
+        // Add event listeners for focus and blur to manage z-index
+        this.addFocusBlurListeners();
     }
 
-    get typeOptions() {
+    // glow highlight cards when focused
+    addFocusBlurListeners() {
+        const comboboxes = this.template.querySelectorAll('lightning-combobox');
+        const textareas = this.template.querySelectorAll('lightning-textarea');
+        
+        [...comboboxes, ...textareas].forEach(element => {
+            element.addEventListener('focus', this.handleFocus.bind(this));
+            element.addEventListener('blur', this.handleBlur.bind(this));
+        });
+    }
+
+    // glow highlight cards when focused
+    handleFocus(event) {
+        const inputCard = event.target.closest('.input-card');
+        if (inputCard) {
+            inputCard.classList.add('active-card');
+        }
+    }
+
+    handleBlur(event) {
+        const inputCard = event.target.closest('.input-card');
+        if (inputCard) {
+            inputCard.classList.remove('active-card');
+        }
+    }
+
+    get feedbackTypeOptions() {
         return [
-            { label: '🐞 Bug', value: 'Bug' },
+            { label: '🐛 Bug Report', value: 'Bug' },
             { label: '💡 Feature Request', value: 'Feature Request' },
             { label: '❓ General Inquiry', value: 'General Inquiry' }
         ];
     }
 
-    get statusOptions() {
+    get priorityOptions() {
         return [
-            { label: 'New', value: 'New' },
-            { label: 'In Progress', value: 'In Progress' },
-            { label: 'Resolved', value: 'Resolved' }
+            { label: '🟢 Low Priority', value: 'Low' },
+            { label: '🟡 Medium Priority', value: 'Medium' },
+            { label: '🔴 High Priority', value: 'High' }
         ];
     }
 
+    get characterCount() {
+        return this.description ? this.description.length : 0;
+    }
+
     handleInputChange(event) {
-        const field = event.target.dataset.id;
+        const field = event.target.name;
         const value = event.target.value;
         
-        if (field === 'feedbackType') {
+        if (field === 'customerName') {
+            this.customerName = value;
+        } else if (field === 'customerLastName') {
+            this.customerLastName = value;
+        } else if (field === 'customerEmail') {
+            this.customerEmail = value;
+        } else if (field === 'feedbackType') {
             this.feedbackType = value;
+        } else if (field === 'priority') {
+            this.priority = value;
         } else if (field === 'description') {
             this.description = value;
-        } else if (field === 'status') {
-            this.status = value;
         }
+    }
+
+    async handleSubmit() { // call the validateForm() method to validate the form
+        if (!this.validateForm()) {
+            return;
+        }
+
+        this.isSubmitting = true;
+
+        try {
+            const recordData = {
+                Customer_Name__c: this.customerName,
+                Customer_Last_Name__c: this.customerLastName,
+                Customer_Email__c: this.customerEmail,
+                Feedback_Type__c: this.feedbackType,
+                Priority__c: this.priority,
+                Description__c: this.description,
+                Status__c: 'New'
+            };
+
+            const result = await createFeedback({ recordData });
+
+            this.showToast('Success', 'Your feedback has been submitted successfully! 🎉', 'success');
+            this.resetForm();
+            
+            // Notify other components that feedback was created
+            this.notifyFeedbackCreated();
+
+        } catch (error) {
+            console.error('Error submitting feedback:', error);
+            this.showToast('Error', 'Failed to submit feedback: ' + error.body.message, 'error');
+        } finally {
+            this.isSubmitting = false;
+        }
+    }
+
+    notifyFeedbackCreated() {
+        const message = {
+            type: 'feedbackCreated'
+        };
+        publish(this.messageContext, FEEDBACK_CHANNEL, message);
     }
 
     validateForm() {
         const allValid = [
-            ...this.template.querySelectorAll('lightning-combobox,lightning-textarea')
+            ...this.template.querySelectorAll('lightning-combobox'),
+            ...this.template.querySelectorAll('lightning-input'),
+            ...this.template.querySelectorAll('lightning-textarea')
         ].reduce((validSoFar, inputCmp) => {
             inputCmp.reportValidity();
             return validSoFar && inputCmp.checkValidity();
         }, true);
 
-        if (!this.feedbackType) {
-            this.dispatchEvent(new ShowToastEvent({
-                title: 'Validation Error',
-                message: 'Please select a feedback type.',
-                variant: 'error'
-            }));
-            return false;
-        }
-
-        if (!this.description || this.description.trim() === '') {
-            this.dispatchEvent(new ShowToastEvent({
-                title: 'Validation Error',
-                message: 'Please enter a description.',
-                variant: 'error'
-            }));
-            return false;
-        }
-
-        if (!this.status) {
-            this.dispatchEvent(new ShowToastEvent({
-                title: 'Validation Error',
-                message: 'Please select a status.',
-                variant: 'error'
-            }));
-            return false;
+        if (!allValid) {
+            this.showToast('Error', 'Please complete all required fields ⚠️', 'error');
         }
 
         return allValid;
     }
 
-
-
-    async handleSubmit() {
-        if (!this.validateForm()) {
-            return;
-        }
-
-        // Extract customer name and email from wired user data
-        const customerName = this.user?.data?.fields?.Name?.value || 'No name provided';
-        const customerEmail = this.user?.data?.fields?.Email?.value || 'No email provided';
-
-        if (!this.user?.data) {
-            this.dispatchEvent(new ShowToastEvent({
-                title: 'Warning',
-                message: 'User information is still loading. Please try again.',
-                variant: 'warning'
-            }));
-            return;
-        }
-
-        this.isLoading = true;
-
-        const feedbackData = {
-            'ece__Feedback_Type__c': this.feedbackType,
-            'ece__Description__c': this.description.trim(),
-            'ece__Status__c': this.status,
-            'ece__Customer_Name__c': customerName,
-            'ece__Customer_Email__c': customerEmail
-        };
-        
-        try {
-            const result = await createFeedback({ recordData: feedbackData });
-            
-            this.dispatchEvent(new ShowToastEvent({
-                title: 'Success!',
-                message: 'Feedback submitted successfully!',
-                variant: 'success'
-            }));
-            
-            const payload = {
-                recordId: result,
-                action: 'create',
-                data: feedbackData
-            };
-            publish(this.messageContext, FEEDBACK_CHANNEL, payload);
-            
-            this.resetForm();
-            
-            if (this.feedbackCreatedCallback) {
-                this.feedbackCreatedCallback();
-            }
-            
-            this.dispatchEvent(new CustomEvent('feedbackcreated', { 
-                detail: { id: result, ...feedbackData } 
-            }));
-            
-        } catch (error) {
-            this.dispatchEvent(new ShowToastEvent({
-                title: 'Error Submitting Feedback',
-                message: error.body && error.body.message ? error.body.message : 'Unknown error occurred.',
-                variant: 'error'
-            }));
-        } finally {
-            this.isLoading = false;
-        }
+    resetForm() {
+        this.customerName = '';
+        this.customerLastName = '';
+        this.customerEmail = '';
+        this.feedbackType = '';
+        this.priority = '';
+        this.description = '';
     }
 
-    resetForm() {
-        this.feedbackType = 'General Inquiry';
-        this.description = '';
-        this.status = 'New';
-        
-        // Reset form validation
-        const inputFields = this.template.querySelectorAll('lightning-combobox,lightning-textarea');
-        if (inputFields) {
-            inputFields.forEach(field => {
-                field.setCustomValidity('');
-                field.reportValidity();
-            });
-        }
+    showToast(title, message, variant) {
+        const event = new ShowToastEvent({
+            title,
+            message,
+            variant
+        });
+        this.dispatchEvent(event); // dispatch the event to the parent component
     }
 }

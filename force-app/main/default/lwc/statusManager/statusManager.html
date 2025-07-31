@@ -1,0 +1,169 @@
+<template>
+    <div class="status-manager">
+        <div class="status-card">
+            
+            <!-- Header -->
+            <div class="card-header">
+                <div class="header-content">
+                    <lightning-icon icon-name="utility:settings" size="small" class="header-icon"></lightning-icon>
+                    <h3 class="header-title">Status Manager</h3>
+                </div>
+                <lightning-button-icon 
+                    icon-name="utility:clock"
+                    alternative-text="Status History"
+                    title="Toggle Status History"
+                    variant="border-filled"
+                    class="history-button"
+                    onclick={toggleStatusHistory}>
+                </lightning-button-icon>
+            </div>
+
+            <!-- Feedback Selection -->
+            <template if:false={feedbackRecord}>
+                <div class="section">
+                    <lightning-combobox
+                        name="feedbackSelector"
+                        label="Select Feedback"
+                        placeholder="Choose feedback to manage..."
+                        value={selectedFeedbackId}
+                        options={feedbackOptions}
+                        onchange={handleFeedbackSelection}
+                        variant="label-stacked"
+                        class="feedback-selector">
+                    </lightning-combobox>
+                </div>
+            </template>
+
+            <!-- Customer Information -->
+            <template if:true={hasSelectedFeedback}>
+                <div class="section customer-info-section">
+                    <div class="customer-info-card">
+                        <div class="customer-header">
+                            <lightning-icon icon-name="utility:contact" size="small" class="customer-icon"></lightning-icon>
+                            <h4 class="customer-title">Submitted By</h4>
+                        </div>
+                        <div class="customer-details">
+                            <div class="customer-detail">
+                                <span class="detail-label">Name:</span>
+                                <span class="detail-value">{customerFullName}</span>
+                            </div>
+                            <div class="customer-detail">
+                                <span class="detail-label">Email:</span>
+                                <span class="detail-value">{customerEmail}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Current Status Display -->
+                <div class="section">
+                    <div class="status-display-card">
+                        <div class="status-info">
+                            <div class="status-label">Current Status</div>
+                            <div class={statusClass}>
+                                <lightning-icon icon-name="utility:check" size="x-small" class="status-icon"></lightning-icon>
+                                <span class="status-text">{currentStatus}</span>
+                            </div>
+                        </div>
+                        <div class="time-info">
+                            <div class="time-badge">
+                                <lightning-icon icon-name="utility:clock" size="x-small"></lightning-icon>
+                                <span>{daysInCurrentStatus} days</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Status Transition -->
+                <div class="section">
+                    <template if:true={availableStatusOptions.length}>
+                        <lightning-combobox
+                            name="statusTransition"
+                            label="Change Status To"
+                            placeholder="Select new status..."
+                            options={availableStatusOptions}
+                            onchange={handleStatusChange}
+                            disabled={isUpdating}
+                            variant="label-stacked"
+                            class="status-selector">
+                        </lightning-combobox>
+                    </template>
+
+                    <template if:false={availableStatusOptions.length}>
+                        <div class="no-transitions">
+                            <lightning-icon icon-name="utility:info" size="small" class="info-icon"></lightning-icon>
+                            <span>No status transitions available</span>
+                        </div>
+                    </template>
+                </div>
+
+                <!-- Reply Section -->
+                <div class="section reply-section">
+                    <div class="reply-header">
+                        <lightning-icon icon-name="utility:email" size="x-small" class="reply-icon"></lightning-icon>
+                        <h4 class="reply-title">Send Reply</h4>
+                    </div>
+                    <lightning-textarea
+                        label="Reply"
+                        value={replyText}
+                        onchange={handleReplyChange}
+                        placeholder="Type your reply to the customer..."
+                        class="reply-textarea">
+                    </lightning-textarea>
+                    <lightning-button
+                        label="Send"
+                        onclick={handleSend}
+                        disabled={isSendingReply}
+                        variant="brand"
+                        class="send-button">
+                    </lightning-button>
+                </div>
+
+                <!-- Loading State -->
+                <template if:true={isUpdating}>
+                    <div class="section loading-section">
+                        <lightning-spinner alternative-text="Updating status..." size="small"></lightning-spinner>
+                        <span class="loading-text">Updating status...</span>
+                    </div>
+                </template>
+
+                <!-- Status History (expandable) -->
+                <template if:true={showStatusHistory}>
+                    <div class="section history-section">
+                        <div class="history-card">
+                            <h4 class="history-title">Status History</h4>
+                            <div class="history-timeline">
+                                <div class="timeline-item">
+                                    <div class="timeline-dot create-dot"></div>
+                                    <div class="timeline-content">
+                                        <div class="timeline-status">Created as New</div>
+                                        <div class="timeline-date">{currentFeedback.CreatedDate}</div>
+                                    </div>
+                                </div>
+                                <template if:true={currentFeedback.LastModifiedDate}>
+                                    <div class="timeline-item">
+                                        <div class="timeline-dot update-dot"></div>
+                                        <div class="timeline-content">
+                                            <div class="timeline-status">Last Updated</div>
+                                            <div class="timeline-date">{currentFeedback.LastModifiedDate}</div>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </template>
+
+            <!-- No Selection State -->
+            <template if:false={hasSelectedFeedback}>
+                <div class="empty-state">
+                    <lightning-icon icon-name="utility:info" size="large" class="empty-icon"></lightning-icon>
+                    <h4 class="empty-title">Select Feedback</h4>
+                    <p class="empty-description">Choose a feedback record to manage its status</p>
+                </div>
+            </template>
+
+        </div>
+    </div>
+</template>

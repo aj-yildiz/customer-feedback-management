@@ -1,0 +1,19 @@
+{
+  "orgName": "Customer Feedback Refactor Test Org",
+  "edition": "Developer",
+  "features": [
+    "EnableSetPasswordInApi",
+    "API",
+    "CustomObjects",
+    "FormulaFields",
+    "ValidationRules"
+  ],
+  "settings": {
+    "lightningExperienceSettings": {
+      "enableS1DesktopEnabled": true
+    },
+    "mobileSettings": {
+      "enableS1EncryptedStoragePref2": false
+    }
+  }
+}

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Escalation_Required__c</fullName>
+    <externalId>false</externalId>
+    <formula>AND(
+    TEXT(Priority__c) = "High",
+    OR(TEXT(Status__c) = "New", TEXT(Status__c) = "In Progress"),
+    Days_Since_Created__c > 2
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Escalation Required</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField> 

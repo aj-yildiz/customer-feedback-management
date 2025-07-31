@@ -1,0 +1,76 @@
+<template>
+    <div class="inbox-container">
+        
+        <!-- Header -->
+        <div class="card-header">
+            <h3 class="header-title">
+                <lightning-icon icon-name="standard:timeline" size="small" class="header-icon"></lightning-icon>
+                Ticket History
+            </h3>
+            <template if:true={showInbox}>
+                <span class="ticket-name">({ticketName})</span>
+            </template>
+        </div>
+
+        <!-- Show history when recordId is available -->
+        <template if:true={showInbox}>
+
+            <!-- History Timeline -->
+            <template if:true={hasHistory}>
+                <div class="history-timeline">
+                    <template for:each={historyEntries} for:item="entry">
+                        <div key={entry.createdDate} class="history-entry">
+                            
+                            <!-- Timeline Dot -->
+                            <div class="timeline-dot">
+                                <span class="entry-icon">{entry.icon}</span>
+                            </div>
+                            
+                            <!-- Entry Content -->
+                            <div class="entry-content">
+                                <div class="entry-header">
+                                    <span class="entry-date">{entry.formattedDate} · {entry.formattedTime}</span>
+                                    <span class="entry-title">{entry.title}</span>
+                                </div>
+                                
+                                <template if:true={entry.description}>
+                                    <div class="entry-description">"{entry.description}"</div>
+                                </template>
+                            </div>
+                            
+                        </div>
+                    </template>
+                </div>
+            </template>
+
+            <!-- No History State -->
+            <template if:false={hasHistory}>
+                <div class="empty-state">
+                    <lightning-icon icon-name="standard:timeline" size="large" class="empty-icon"></lightning-icon>
+                    <h3 class="empty-title">No Activity Yet</h3>
+                    <p class="empty-description">Ticket activity and responses will appear here.</p>
+                </div>
+            </template>
+
+            <!-- Error State -->
+            <template if:true={error}>
+                <div class="error-state">
+                    <lightning-icon icon-name="utility:error" size="large" class="error-icon"></lightning-icon>
+                    <h3 class="error-title">Error loading ticket history</h3>
+                    <p class="error-description">{error.body.message}</p>
+                </div>
+            </template>
+
+        </template>
+
+        <!-- No Feedback Selected State -->
+        <template if:false={showInbox}>
+            <div class="selection-state">
+                <lightning-icon icon-name="utility:record_lookup" size="large" class="selection-icon"></lightning-icon>
+                <h3 class="selection-title">Select a Feedback Record</h3>
+                <p class="selection-description">Choose a feedback record from the Status Manager to view ticket history.</p>
+            </div>
+        </template>
+
+    </div>
+</template> 

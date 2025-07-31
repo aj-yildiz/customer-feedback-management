@@ -1,89 +1,152 @@
 <template>
-    <div class="feedback-form-wrapper">
-        <article class="slds-card feedback-form-card-green">
-            <div class="slds-card__header slds-grid" style="align-items:center; justify-content:space-between; position:relative;">
-                <header class="slds-media slds-media_center slds-has-flexi-truncate">
-                    <div class="slds-media__figure">
-                        <lightning-icon icon-name="utility:feedback" size="small" class="slds-m-right_small"></lightning-icon>
-                    </div>
-                    <div class="slds-media__body">
-                        <h2 class="slds-card__header-title slds-text-heading_medium">Create Feedback</h2>
-                    </div>
-                </header>
-
+    <div class="feedback-container">
+        <!-- Header Section -->
+        <div class="header-section">
+            <div class="header-content">
+                <h1 class="main-title">✨ Share Your Feedback</h1>
+                <p class="subtitle">Help us improve by sharing your thoughts and suggestions</p>
             </div>
-            
-            <div class="slds-card__body slds-card__body_inner slds-p-around_large">
-                <!-- Loading Indicator -->
-                <template if:true={isLoading}>
-                    <div class="slds-text-align_center slds-m-bottom_medium">
-                        <lightning-spinner alternative-text="Submitting feedback..." size="small"></lightning-spinner>
-                        <p class="slds-text-body_small slds-m-top_x-small">Creating your feedback...</p>
+        </div>
+
+        <!-- Form Section -->
+        <div class="form-section">
+            <div class="form-grid">
+                <!-- Customer Name Card -->
+                <div class="input-card">
+                    <div class="card-header">
+                        <div class="card-icon">👤</div>
+                        <h3 class="card-title">First Name</h3>
                     </div>
-                </template>
-                
-                <!-- Form Fields -->
-                <div class="form-section slds-form">
-                    <!-- Feedback Type -->
-                    <span class="form-section-heading">Feedback Type <span style="color: red;">*</span></span>
-                    <div class="slds-form-element">
+                    <div class="card-content">
+                        <lightning-input
+                            name="customerName"
+                            value={customerName}
+                            placeholder="Enter your first name"
+                            onchange={handleInputChange}
+                            variant="label-hidden"
+                            required>
+                        </lightning-input>
+                    </div>
+                </div>
+
+                <!-- Customer Last Name Card -->
+                <div class="input-card">
+                    <div class="card-header">
+                        <div class="card-icon">👥</div>
+                        <h3 class="card-title">Last Name</h3>
+                    </div>
+                    <div class="card-content">
+                        <lightning-input
+                            name="customerLastName"
+                            value={customerLastName}
+                            placeholder="Enter your last name"
+                            onchange={handleInputChange}
+                            variant="label-hidden"
+                            required>
+                        </lightning-input>
+                    </div>
+                </div>
+
+                <!-- Customer Email Card -->
+                <div class="input-card">
+                    <div class="card-header">
+                        <div class="card-icon">📧</div>
+                        <h3 class="card-title">Email Address</h3>
+                    </div>
+                    <div class="card-content">
+                        <lightning-input
+                            type="email"
+                            name="customerEmail"
+                            value={customerEmail}
+                            placeholder="Enter your email address"
+                            onchange={handleInputChange}
+                            variant="label-hidden"
+                            required>
+                        </lightning-input>
+                    </div>
+                </div>
+
+                <!-- Feedback Type Card -->
+                <div class="input-card">
+                    <div class="card-header">
+                        <div class="card-icon">📝</div>
+                        <h3 class="card-title">Feedback Type</h3>
+                    </div>
+                    <div class="card-content">
                         <lightning-combobox
                             name="feedbackType"
-                            label="Feedback Type"
                             value={feedbackType}
-                            options={typeOptions}
+                            placeholder="What type of feedback?"
+                            options={feedbackTypeOptions}
                             onchange={handleInputChange}
-                            data-id="feedbackType"
-                            required
-                            disabled={isLoading}
-                            class="slds-m-bottom_medium">
+                            variant="label-hidden"
+                            class="custom-combobox"
+                            required>
                         </lightning-combobox>
                     </div>
-                    
-                    <!-- Description -->
-                    <span class="form-section-heading">Description <span style="color: red;">*</span></span>
-                    <div class="slds-form-element">
+                </div>
+
+                <!-- Priority Card -->
+                <div class="input-card">
+                    <div class="card-header">
+                        <div class="card-icon">⚡</div>
+                        <h3 class="card-title">Priority Level</h3>
+                    </div>
+                    <div class="card-content">
+                        <lightning-combobox
+                            name="priority"
+                            value={priority}
+                            placeholder="How urgent is this?"
+                            options={priorityOptions}
+                            onchange={handleInputChange}
+                            variant="label-hidden"
+                            class="custom-combobox"
+                            required>
+                        </lightning-combobox>
+                    </div>
+                </div>
+
+                <!-- Description Card -->
+                <div class="input-card description-card">
+                    <div class="card-header">
+                        <div class="card-icon">💭</div>
+                        <h3 class="card-title">Your Message</h3>
+                    </div>
+                    <div class="card-content">
                         <lightning-textarea
                             name="description"
-                            label="Description"
                             value={description}
+                            placeholder="Tell us more about your feedback..."
                             onchange={handleInputChange}
-                            data-id="description"
-                            required
-                            disabled={isLoading}
-                            placeholder="Please provide detailed information about your feedback..."
-                            max-length="1000">
+                            max-length="1000"
+                            variant="label-hidden"
+                            class="custom-textarea"
+                            required>
                         </lightning-textarea>
+                        <div class="character-counter">
+                            {characterCount}/1000
+                        </div>
                     </div>
-                    
-                    <!-- Status -->
-                    <span class="form-section-heading">Status <span style="color: red;">*</span></span>
-                    <div class="slds-form-element">
-                        <lightning-combobox
-                            name="status"
-                            label="Status"
-                            value={status}
-                            options={statusOptions}
-                            onchange={handleInputChange}
-                            data-id="status"
-                            required
-                            disabled={isLoading}>
-                        </lightning-combobox>
-                    </div>
-                </div>
-                
-                <!-- Submit Button -->
-                <div class="form-actions slds-m-top_large">
-                    <lightning-button
-                        variant="brand"
-                        label="Submit Feedback"
-                        onclick={handleSubmit}
-                        disabled={isLoading}
-                        class="submit-button"
-                        style="--sds-c-button-brand-color-background: #00C853; --sds-c-button-brand-color-border: #00C853; --sds-c-button-brand-color-background-hover: #00B74F; --sds-c-button-brand-color-border-hover: #00B74F; --sds-c-button-text-color: white;">
-                    </lightning-button>
                 </div>
             </div>
-        </article>
+
+            <!-- Submit Section -->
+            <div class="submit-section">
+                <lightning-button
+                    variant="brand"
+                    label="Send Feedback"
+                    onclick={handleSubmit}
+                    disabled={isSubmitting}
+                    class="submit-btn">
+                </lightning-button>
+
+                <template if:true={isSubmitting}>
+                    <div class="loading-section">
+                        <lightning-spinner alternative-text="Sending..." size="medium"></lightning-spinner>
+                        <p class="loading-text">Sending your feedback...</p>
+                    </div>
+                </template>
+            </div>
+        </div>
     </div>
 </template>

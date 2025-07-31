@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types>
+        <members>Customer_Feedback__c</members>
+        <name>CustomObject</name>
+    </types>
+    <types>
+        <members>Customer_Feedback__c.Description_Required</members>
+        <members>Customer_Feedback__c.Email_Required_When_Closed</members>
+        <name>ValidationRule</name>
+    </types>
+    <version>60.0</version>
+</Package> 
